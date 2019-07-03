@@ -9,6 +9,4 @@ interface Model {
   schema: Schema
 }
 
-declare interface Profile {
-  models: HashMap<Schema>
-}
+declare type Schemas = HashMap<Schema>

@@ -1,6 +1,11 @@
 type Json = String
 
 export abstract class DbInterface {
+  models: HashMap<Model>
+  constructor(models: HashMap<Model>) {
+    this.models = models
+  }
+
   public abstract find(collection: string, filters?: HashMap): Promise<Json>
   public abstract find_one(collection: string, filters?: HashMap): Promise<Json>
 

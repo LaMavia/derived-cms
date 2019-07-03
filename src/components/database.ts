@@ -1,15 +1,48 @@
 import { DbInterface } from '../class/DbInterface'
-import mongo from 'mongoose'
+import mongo, { Types } from 'mongoose'
 
 export class MongoDatabase extends DbInterface {
   private connection?: mongo.Connection
   private uri: string
+  private mongo_models: HashMap<mongo.Model<any>> = {}
 
-  constructor() {
-    super()
+  constructor(models: HashMap<Model>) {
+    super(models)
     this.uri = process.env['DC_DATABASE_URL'] || ''
 
     if (!this.uri) throw new Error('DC_DATABASE_URL missing from .env')
+    // -------- Initialize Models -------- //
+    for (const mod of Object.values(models)) this.initModel(mod)
+  }
+
+  private translate_field_to_mongo(v: FieldType) {
+    switch (v) {
+      case 'String':
+        return String
+      case 'Boolean':
+        return Boolean
+      case 'Date':
+        return Date
+      case 'ID':
+        return Types.ObjectId
+      case 'Number':
+        return Number
+      case 'Text':
+        return String
+    }
+  }
+
+  private initModel(model: Model) {
+    const { collection, schema } = model
+    const proto_schema: HashMap<any> = {}
+    for (const k in schema) {
+      proto_schema[k] = this.translate_field_to_mongo(schema[k])
+    }
+
+    const sch = new mongo.Schema(proto_schema)
+    const mod = new mongo.Model(sch) as mongo.Model<any>
+
+    this.mongo_models[collection] = mod
   }
 
   connect() {
