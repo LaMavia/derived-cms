@@ -1,4 +1,4 @@
-type Json = String
+type Json = Array<HashMap<any>> | HashMap<any>
 
 export abstract class DbInterface {
   models: HashMap<Model>
@@ -44,6 +44,8 @@ export abstract class DbInterface {
     key: string,
     newKey: string
   ): Promise<Json>
+
+  public abstract save_schemas(): Promise<void>
 
   public abstract connect(): Promise<void>
 }

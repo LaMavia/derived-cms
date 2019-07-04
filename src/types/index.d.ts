@@ -10,3 +10,10 @@ interface Model {
 }
 
 declare type Schemas = HashMap<Schema>
+declare type Json = string
+
+declare interface APIResponse {
+  data: Json
+  error?: string
+  ok: boolean
+}

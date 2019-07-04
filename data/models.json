@@ -1,0 +1,18 @@
+{
+  "posts": {
+    "collection": "posts",
+    "schema": {
+      "_id": "ID",
+      "title": "String",
+      "subtitle": "String",
+      "abstract_": "Text",
+      "tags": "String",
+      "author_id": "ID",
+      "body": "Text",
+      "theme": "String",
+      "image_url": "String",
+      "date": "Date",
+      "front_page_style": "String"
+    }
+  }
+}

@@ -20,7 +20,7 @@ const template = `
 `
 
 r.get('Index', '/*', ctx => {
-  ctx.body = template
+  !ctx.body && (ctx.body = template)
 })
 
 export default r
