@@ -1,11 +1,10 @@
+@import "bulma/sass/utilities/_all.sass";
+@import "bulma/sass/base/_all.sass";
+@import "bulma/sass/components/menu.sass";
+@import "./components/Nav.scss";
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-}
-
-html, body {
-  width: 100vw;
-  height: 100vh;
-  overflow-y: auto;
 }

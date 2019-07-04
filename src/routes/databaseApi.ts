@@ -45,8 +45,13 @@ r.get('models', ctx => {
   const data = []
 
   const q = typeof ctx.query['models'] === 'string' ? ctx.query['models'] : ''
+  const all = ctx.query['all']
 
-  for (const modelName of q ? q.split(',') : []) {
+  for (const modelName of all
+    ? Object.keys(ctx.db.models)
+    : q
+    ? q.split(',')
+    : []) {
     if (!modelName) continue
     data.push(ctx.db.models[modelName])
   }

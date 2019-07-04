@@ -3,19 +3,18 @@
 
 var React = require("react");
 var ReasonReactRouter = require("reason-react/src/ReasonReactRouter.js");
+var Layout$ReactHooksTemplate = require("./components/Layout.bs.js");
 var Pages__404$ReactHooksTemplate = require("./pages/Pages__404.bs.js");
 var Pages__Index$ReactHooksTemplate = require("./pages/Pages__Index.bs.js");
 
 function Router(Props) {
   var url = ReasonReactRouter.useUrl(undefined, /* () */0);
   var match = url[/* path */0];
-  if (match) {
-    return React.createElement(Pages__404$ReactHooksTemplate.make, {
-                path: url[/* path */0]
-              });
-  } else {
-    return React.createElement(Pages__Index$ReactHooksTemplate.make, { });
-  }
+  return React.createElement(Layout$ReactHooksTemplate.make, {
+              children: match ? React.createElement(Pages__404$ReactHooksTemplate.make, {
+                      path: url[/* path */0]
+                    }) : React.createElement(Pages__Index$ReactHooksTemplate.make, { })
+            });
 }
 
 var make = Router;
