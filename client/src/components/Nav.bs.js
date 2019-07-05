@@ -4,6 +4,7 @@
 var Curry = require("bs-platform/lib/js/curry.js");
 var React = require("react");
 var ReactDOMRe = require("reason-react/src/ReactDOMRe.js");
+var Link$ReactHooksTemplate = require("./Link.bs.js");
 var Burger$ReactHooksTemplate = require("./Burger.bs.js");
 var Helpers$ReactHooksTemplate = require("../Helpers.bs.js");
 
@@ -11,23 +12,12 @@ function Nav$Item(Props) {
   var href = Props.href;
   var icon = Props.icon;
   var children = Props.children;
-  var onClick = Props.onClick;
-  var className = Props.className;
   return React.createElement("li", {
-              className: /* array */[
-                  "nav__list__item",
-                  className !== undefined ? className : ""
-                ].join(" "),
-              onClick: (function (e) {
-                  if (onClick !== undefined) {
-                    return Curry._1(onClick, e);
-                  } else {
-                    return /* () */0;
-                  }
-                })
-            }, React.createElement("a", {
-                  className: "nav__list__item__link",
-                  href: href
+              className: "nav__list__item"
+            }, React.createElement(Link$ReactHooksTemplate.make, {
+                  children: null,
+                  href: href,
+                  className: "nav__list__item__link"
                 }, React.createElement("figure", {
                       className: "nav__list__item__link__icon"
                     }, icon), React.createElement("span", {
@@ -53,15 +43,20 @@ function Nav$Submenu(Props) {
                   isopen ? "nav__submenu--open" : ""
                 ].join(" "),
               style: style
-            }, React.createElement(Nav$Item, {
-                  href: href,
-                  icon: icon,
-                  children: rootContent,
+            }, React.createElement("button", {
+                  className: "nav__list__item submenu__root",
                   onClick: (function (param) {
                       return Curry._1(setopen, !isopen);
-                    }),
-                  className: "nav__submenu__root"
-                }), React.createElement("ul", {
+                    })
+                }, React.createElement(Link$ReactHooksTemplate.make, {
+                      children: null,
+                      href: href,
+                      className: "nav__list__item__link"
+                    }, React.createElement("figure", {
+                          className: "nav__list__item__link__icon"
+                        }, icon), React.createElement("span", {
+                          className: "nav__list__item__link__text"
+                        }, rootContent))), React.createElement("ul", {
                   className: "nav__submenu__list"
                 }, children));
 }

@@ -14,28 +14,12 @@ open Helpers;
 module Item = {
   /*** height of <a/> = --nav-item-h  */
   [@react.component]
-  let make = (~href, ~icon, ~children, ~onClick=?, ~className=?) => {
-    <li
-      className={
-        [|
-          "nav__list__item",
-          switch (className) {
-          | Some(c) => c
-          | None => ""
-          },
-        |]
-        |> Js.Array.joinWith(" ")
-      }
-      onClick={e =>
-        switch (onClick) {
-        | Some(onClick) => e->onClick
-        | None => ()
-        }
-      }>
-      <a href className="nav__list__item__link">
+  let make = (~href, ~icon, ~children) => {
+    <li className="nav__list__item">
+      <Link href className="nav__list__item__link">
         <figure className="nav__list__item__link__icon"> icon </figure>
         <span className="nav__list__item__link__text"> children </span>
-      </a>
+      </Link>
     </li>;
   };
 };
@@ -54,13 +38,14 @@ module Submenu = {
         |> Js.Array.joinWith(" ")
       }
       style>
-      <Item
-        href
-        icon
-        onClick={_ => setopen(!isopen)}
-        className="nav__submenu__root">
-        rootContent
-      </Item>
+      <button
+        className="nav__list__item submenu__root"
+        onClick={_ => setopen(!isopen)}>
+        <Link href className="nav__list__item__link">
+          <figure className="nav__list__item__link__icon"> icon </figure>
+          <span className="nav__list__item__link__text"> rootContent </span>
+        </Link>
+      </button>
       <ul className="nav__submenu__list"> children </ul>
     </li>;
   };

@@ -75,6 +75,8 @@
     &__item {
       width: 100%;
       overflow: hidden;
+      background-color: inherit;
+      border: none;
 
       &__link {
         display: flex;
@@ -103,8 +105,6 @@
         &__text {
           margin-left: 5px;
           color: #ffffff;
-          font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS',
-            sans-serif;
         }
       }
     }
