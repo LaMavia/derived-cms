@@ -60,6 +60,8 @@
 .nav__list__item {
   width: 100%;
   overflow: hidden;
+  background-color: inherit;
+  border: none;
 }
 .nav__list__item__link {
   display: flex;
@@ -84,7 +86,6 @@
 .nav__list__item__link__text {
   margin-left: 5px;
   color: #ffffff;
-  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
 }
 .nav__submenu {
   height: var(--nav-item-full-h);
@@ -109,10 +110,37 @@
   margin-left: var(--nav-item-spacing);
 }
 
+.layout {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-flow: row nowrap;
+}
+.layout .content {
+  width: calc(100vw - var(--nav-w));
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: width 0.15 0s ease-in-out;
+  will-change: width;
+  padding: 10px;
+}
+
+.open .content {
+  width: calc(100vw - var(--nav-collapsed-w));
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+html,
+body {
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-weight: 300;
 }
 
 /*# sourceMappingURL=index.css.map */
