@@ -47,7 +47,7 @@ import { KoaConext } from './context'
       console.error(err)
       return {}
     })
-
+ 
   // Join routers
   router.use(dbApi.middleware()).use(index.middleware())
 
@@ -59,12 +59,17 @@ import { KoaConext } from './context'
   const isEnvVar = /^DC_/
   const db: DbInterface = new MongoDatabase(schemas)
   await db.connect()
-  setInterval(() => {
-    db.save_schemas()
-  }, 60000)
+  // setInterval(() => {
+  //   db.save_schemas()
+  // }, 60000)
   app.context.db = db
 
   app
+    .use(
+      cors({
+        origin: '*',
+      })
+    )
     .use(KoaLogger())
     .use(staticServer)
     .use(router.middleware())

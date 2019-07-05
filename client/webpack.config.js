@@ -3,7 +3,7 @@ const outputDir = path.join(__dirname, 'build/')
 
 const isProd = process.env.NODE_ENV === 'production'
 
-const less_override = path.resolve(__dirname, "less/index.less")
+const less_override = path.resolve(__dirname, 'less/index.less')
 
 module.exports = {
   entry: './src/Index.bs.js',
@@ -11,6 +11,19 @@ module.exports = {
   output: {
     path: outputDir,
     filename: 'Index.js',
+  },
+  module: {
+    rules: [
+      {
+        test: /\.svg$/,
+        use: ['svg-inline-loader'],
+      },
+    ],
+  },
+  resolve: {
+    alias: {
+      '@public': path.resolve('./build/'),
+    },
   },
   plugins: [],
   devServer: {

@@ -2,13 +2,62 @@
 'use strict';
 
 var React = require("react");
+var Nav$ReactHooksTemplate = require("./Nav.bs.js");
+var Icon$ReactHooksTemplate = require("./Icon.bs.js");
+var Helpers$ReactHooksTemplate = require("../Helpers.bs.js");
 
 function Layout(Props) {
   var children = Props.children;
-  return React.createElement("div", {
-              className: "layout",
-              id: "layout"
-            }, React.createElement(React.Fragment, undefined, children));
+  var match = Helpers$ReactHooksTemplate.useState(false);
+  var collapsed = match[0];
+  return React.createElement("section", {
+              className: /* array */[
+                  "layout",
+                  collapsed ? "" : "open"
+                ].join(" ")
+            }, React.createElement(Nav$ReactHooksTemplate.make, {
+                  state: /* tuple */[
+                    collapsed,
+                    match[1]
+                  ],
+                  children: null
+                }, React.createElement(Nav$ReactHooksTemplate.Item[/* make */0], {
+                      href: "#",
+                      icon: React.createElement(Icon$ReactHooksTemplate.make, {
+                            name: /* id */23515
+                          }),
+                      children: Helpers$ReactHooksTemplate.str("Hello")
+                    }), React.createElement(Nav$ReactHooksTemplate.Submenu[/* make */0], {
+                      children: React.createElement(Nav$ReactHooksTemplate.Item[/* make */0], {
+                            href: "#",
+                            icon: React.createElement(Icon$ReactHooksTemplate.make, {
+                                  name: /* id */23515
+                                }),
+                            children: Helpers$ReactHooksTemplate.str("there")
+                          }),
+                      href: "#",
+                      icon: React.createElement(Icon$ReactHooksTemplate.make, {
+                            name: /* burger */-662434123
+                          }),
+                      rootContent: Helpers$ReactHooksTemplate.str("Hello"),
+                      nItems: 1
+                    }), React.createElement(Nav$ReactHooksTemplate.Submenu[/* make */0], {
+                      children: React.createElement(Nav$ReactHooksTemplate.Item[/* make */0], {
+                            href: "#",
+                            icon: React.createElement(Icon$ReactHooksTemplate.make, {
+                                  name: /* id */23515
+                                }),
+                            children: Helpers$ReactHooksTemplate.str("there")
+                          }),
+                      href: "#",
+                      icon: React.createElement(Icon$ReactHooksTemplate.make, {
+                            name: /* burger */-662434123
+                          }),
+                      rootContent: Helpers$ReactHooksTemplate.str("Hello"),
+                      nItems: 1
+                    })), React.createElement("section", {
+                  className: "content"
+                }, children));
 }
 
 var make = Layout;

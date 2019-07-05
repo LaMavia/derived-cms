@@ -1,7 +1,5 @@
-@import "bulma/sass/utilities/_all.sass";
-@import "bulma/sass/base/_all.sass";
-@import "bulma/sass/components/menu.sass";
 @import "./components/Nav.scss";
+@import "./components/Layout.scss";
 
 * {
   margin: 0;
