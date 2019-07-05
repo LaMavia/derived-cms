@@ -1,0 +1,92 @@
+:root {
+  --auth-form-w: 24rem;
+  --auth-form-pd: 40px;
+  --auth-item-h: 2.5rem;
+}
+
+.nav {
+  visibility: hidden;
+}
+
+.auth {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100%;
+  display: flex;
+  overflow: hidden;
+  flex-flow: row nowrap;
+
+  &__img {
+    height: 100%;
+    background-position: center;
+    flex-shrink: 1;
+  }
+
+  &__form {
+    position: fixed;
+    right: 0;
+    width: var(--auth-form-w);
+    height: 100%;
+    background-color: #fefefe;
+    color: #1b1b1b;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    padding: 60px var(--auth-form-pd);
+    box-shadow: 0 0 7px 1px rgba(21, 21, 21, 0.6);
+
+    &__title {
+      font-size: 3rem;
+      font-weight: 200;
+      text-transform: uppercase;
+      text-align: center;
+      margin-bottom: 70px;
+    }
+
+    &__fields {
+      display: flex;
+      flex-flow: column nowrap;
+      width: 100%;
+
+      margin-bottom: 30px;
+      border: none;
+    }
+
+    &__input {
+      border: none;
+      background-color: #eeeeee;
+      border-radius: 5px;
+      height: var(--auth-item-h);
+      font-size: 1rem;
+      padding-left: 10px;
+      margin: 12px;
+    }
+
+    &__btn {
+      border-radius: 5px;
+      width: 80%;
+      appearance: none;
+      height: var(--auth-item-h);
+
+      &--submit {
+      }
+    }
+  }
+}
+
+
+@keyframes btn-click {
+  0% {
+    
+  }
+
+  99% {
+
+  }
+
+  100% {
+
+  }
+}

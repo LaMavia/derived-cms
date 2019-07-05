@@ -7,16 +7,16 @@
 
   .content {
     width: calc(100vw - var(--nav-w));
+    flex-grow: 1;
     height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
-    transition: width .15 0s ease-in-out;
+    transition: width 0.15 0s ease-in-out;
     will-change: width;
-    padding: 10px;
   }
 }
 
-.open {
+.collapsed {
   .content {
     width: calc(100vw - var(--nav-collapsed-w));
   }

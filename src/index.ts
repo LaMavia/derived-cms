@@ -6,6 +6,7 @@ import KoaStatic from 'koa-static'
 import cors from '@koa/cors'
 import KoaLogger from 'koa-logger'
 import fs from 'fs-extra'
+import jwt from 'koa-jwt'
 import {
   vName,
   symbol,
@@ -20,16 +21,18 @@ import {
 // -------- Routes -------- //
 import index from './routes/index'
 import dbApi from './routes/databaseApi'
+import authRouter from './routes/auth'
 
 // -------- /Routes -------- //
 
 import { resolve } from 'path'
 import { DbInterface } from './class/DbInterface'
 import { MongoDatabase } from './components/database'
-import { KoaConext } from './context'
+import { KoaConext, KoaState, secret } from './context'
+import { UsersManager } from './components/users'
 ;(async () => {
-  const app = new Koa<any, KoaConext>()
-  const router = new KoaRouter<any, KoaConext>()
+  const app = new Koa<KoaState, KoaConext>()
+  const router = new KoaRouter<KoaState, KoaConext>()
 
   const staticDir = resolve('./client/build')
   const staticServer = KoaStatic(staticDir)
@@ -47,9 +50,14 @@ import { KoaConext } from './context'
       console.error(err)
       return {}
     })
- 
+
   // Join routers
-  router.use(dbApi.middleware()).use(index.middleware())
+  router
+    .use(index.middleware())
+    // -------- Guarded Routes [exc: auth/signup, auth/signin] -------- //
+    .use(jwt({ secret }).unless({ path: [/sign/] }))
+    .use(dbApi.middleware())
+    .use(authRouter.middleware())
 
   dotenv.config({
     debug: true,
@@ -57,12 +65,23 @@ import { KoaConext } from './context'
 
   const port = +(process.env['DC_PORT'] || 8000)
   const isEnvVar = /^DC_/
+
+  // -------- Init Database -------- //
   const db: DbInterface = new MongoDatabase(schemas)
   await db.connect()
+
+  // -------- Init UsersManager -------- //
+  const usersManager = new UsersManager()
+
+  // -------- Init "CRON" jobs -------- //
   // setInterval(() => {
   //   db.save_schemas()
   // }, 60000)
+
+  // -------- Init Context -------- //
   app.context.db = db
+  app.context.usersManager = usersManager
+  app.context.secret = secret
 
   app
     .use(
@@ -76,6 +95,7 @@ import { KoaConext } from './context'
     .use(router.allowedMethods())
     .listen(port)
     .on('listening', () => {
+      // -------- Welcome Screen -------- //
       console.log(
         `
   ${text(`DerivedCMS @${port.toString()}`)} ${emoji.get('coffee')}
@@ -94,7 +114,7 @@ import { KoaConext } from './context'
 ${router.stack
   .map(
     l =>
-      `  ${symbol`=>`} ${method(l.methods.join(' | '))} ${path(
+      `  ${symbol`=>`} ${method(l.methods.join(' | ') || '*')} ${path(
         l.path || l.regexp.source
       )}`
   )

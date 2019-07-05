@@ -8,8 +8,8 @@ let make = (~children) => {
     className={
       [|
         "layout",
-        if (!collapsed) {
-          "open";
+        if (collapsed) {
+          "collapsed";
         } else {
           "";
         },
@@ -23,8 +23,10 @@ let make = (~children) => {
         <Nav.Item href="#" icon={<Icon name=`id />}> "there"->str </Nav.Item>
       </Nav.Submenu>
       <Nav.Submenu
-        nItems=1 href="#" icon={<Icon name=`burger />} rootContent={"Hello"->str}>
+        nItems=3 href="#" icon={<Icon name=`burger />} rootContent={"Hello"->str}>
         <Nav.Item href="#" icon={<Icon name=`id />}> "there"->str </Nav.Item>
+        <Nav.Item href="#" icon={<Icon name=`id />}> "good"->str </Nav.Item>
+        <Nav.Item href="#" icon={<Icon name=`id />}> "sir"->str </Nav.Item>
       </Nav.Submenu>
     </Nav>
     <section className="content"> children </section>

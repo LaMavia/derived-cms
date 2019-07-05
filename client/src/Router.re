@@ -11,6 +11,7 @@ let make = () => {
   <Layout>
     {switch (url.path) {
      | [] => <Pages__Index />
+     | ["auth", "signin"] => <Pages__Signin />
      | _ => <Pages__404 path={url.path} />
      }}
   </Layout>;

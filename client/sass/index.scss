@@ -1,5 +1,8 @@
 @import './components/Nav.scss';
 @import './components/Layout.scss';
+@import './pages/Index.scss';
+@import './pages/auth/common.scss';
+@import './pages/auth/signin.scss';
 
 * {
   margin: 0;

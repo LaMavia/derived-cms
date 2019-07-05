@@ -6,14 +6,34 @@ var ReasonReactRouter = require("reason-react/src/ReasonReactRouter.js");
 var Layout$ReactHooksTemplate = require("./components/Layout.bs.js");
 var Pages__404$ReactHooksTemplate = require("./pages/Pages__404.bs.js");
 var Pages__Index$ReactHooksTemplate = require("./pages/Pages__Index.bs.js");
+var Pages__Signin$ReactHooksTemplate = require("./pages/Pages__Signin.bs.js");
 
 function Router(Props) {
   var url = ReasonReactRouter.useUrl(undefined, /* () */0);
   var match = url[/* path */0];
+  var tmp;
+  var exit = 0;
+  if (match) {
+    if (match[0] === "auth") {
+      var match$1 = match[1];
+      if (match$1 && match$1[0] === "signin" && !match$1[1]) {
+        tmp = React.createElement(Pages__Signin$ReactHooksTemplate.make, { });
+      } else {
+        exit = 1;
+      }
+    } else {
+      exit = 1;
+    }
+  } else {
+    tmp = React.createElement(Pages__Index$ReactHooksTemplate.make, { });
+  }
+  if (exit === 1) {
+    tmp = React.createElement(Pages__404$ReactHooksTemplate.make, {
+          path: url[/* path */0]
+        });
+  }
   return React.createElement(Layout$ReactHooksTemplate.make, {
-              children: match ? React.createElement(Pages__404$ReactHooksTemplate.make, {
-                      path: url[/* path */0]
-                    }) : React.createElement(Pages__Index$ReactHooksTemplate.make, { })
+              children: tmp
             });
 }
 

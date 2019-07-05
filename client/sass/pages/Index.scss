@@ -1,0 +1,17 @@
+.content__index {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+}
+.title {
+  align-self: center;
+  font-weight: 300;
+  font-size: 5rem;
+  color: #3f3f3f;
+  text-shadow: 
+    2px 2px 2px rgba($color: #3f3f3f, $alpha: 0.6)
+    , 4px 4px 2px rgba($color: #3f3f3f, $alpha: 0.6)
+    , 0px 0px 10px rgba(51, 51, 51, .5)
+  ;
+}

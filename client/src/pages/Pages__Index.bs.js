@@ -5,7 +5,11 @@ var React = require("react");
 var Helpers$ReactHooksTemplate = require("../Helpers.bs.js");
 
 function Pages__Index(Props) {
-  return React.createElement("div", undefined, React.createElement("h1", undefined, Helpers$ReactHooksTemplate.str("Hello index!")));
+  return React.createElement("div", {
+              className: "content__index"
+            }, React.createElement("h1", {
+                  className: "title"
+                }, Helpers$ReactHooksTemplate.str("DerivedCMS")));
 }
 
 var make = Pages__Index;

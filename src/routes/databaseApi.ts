@@ -1,12 +1,16 @@
 import Router from 'koa-router'
-import { KoaConext } from '../context'
+import { KoaConext, secret } from '../context'
+import jwt from 'koa-jwt'
+import jsonwebtoken from 'jsonwebtoken'
 
 const r = new Router<any, KoaConext>({
   prefix: '/db_api/',
 })
+
 // -------- API Schema -------- //
 /**
  1. "/all/:model" => returns every entry of the specified model
+ 2. "models" => returns all the schemas
 */
 // -------- /API Schema -------- //
 r.get('all/:model', async (ctx, _next) => {

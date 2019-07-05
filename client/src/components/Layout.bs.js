@@ -13,7 +13,7 @@ function Layout(Props) {
   return React.createElement("section", {
               className: /* array */[
                   "layout",
-                  collapsed ? "" : "open"
+                  collapsed ? "collapsed" : ""
                 ].join(" ")
             }, React.createElement(Nav$ReactHooksTemplate.make, {
                   state: /* tuple */[
@@ -42,20 +42,32 @@ function Layout(Props) {
                       rootContent: Helpers$ReactHooksTemplate.str("Hello"),
                       nItems: 1
                     }), React.createElement(Nav$ReactHooksTemplate.Submenu[/* make */0], {
-                      children: React.createElement(Nav$ReactHooksTemplate.Item[/* make */0], {
-                            href: "#",
-                            icon: React.createElement(Icon$ReactHooksTemplate.make, {
-                                  name: /* id */23515
-                                }),
-                            children: Helpers$ReactHooksTemplate.str("there")
-                          }),
+                      children: null,
                       href: "#",
                       icon: React.createElement(Icon$ReactHooksTemplate.make, {
                             name: /* burger */-662434123
                           }),
                       rootContent: Helpers$ReactHooksTemplate.str("Hello"),
-                      nItems: 1
-                    })), React.createElement("section", {
+                      nItems: 3
+                    }, React.createElement(Nav$ReactHooksTemplate.Item[/* make */0], {
+                          href: "#",
+                          icon: React.createElement(Icon$ReactHooksTemplate.make, {
+                                name: /* id */23515
+                              }),
+                          children: Helpers$ReactHooksTemplate.str("there")
+                        }), React.createElement(Nav$ReactHooksTemplate.Item[/* make */0], {
+                          href: "#",
+                          icon: React.createElement(Icon$ReactHooksTemplate.make, {
+                                name: /* id */23515
+                              }),
+                          children: Helpers$ReactHooksTemplate.str("good")
+                        }), React.createElement(Nav$ReactHooksTemplate.Item[/* make */0], {
+                          href: "#",
+                          icon: React.createElement(Icon$ReactHooksTemplate.make, {
+                                name: /* id */23515
+                              }),
+                          children: Helpers$ReactHooksTemplate.str("sir")
+                        }))), React.createElement("section", {
                   className: "content"
                 }, children));
 }
