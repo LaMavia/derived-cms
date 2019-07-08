@@ -1,5 +1,6 @@
 import { DbInterface } from './class/DbInterface'
 import { UsersManager } from './components/users';
+import { SessionStorage, Session } from './components/sessionStorage';
 /**
  * This file is a sort of workaround the .d.ts import issue.
  * They don't allow for importing classes etc.
@@ -21,4 +22,6 @@ export interface KoaConext {
   db: DbInterface
   secret: string
   usersManager: UsersManager
+  sessionsManager: SessionStorage
+  session?: Session
 }

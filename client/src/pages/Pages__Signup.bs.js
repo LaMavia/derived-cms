@@ -10,16 +10,18 @@ var JMySon$ReactHooksTemplate = require("../JMySon.bs.js");
 var AuthLayout$ReactHooksTemplate = require("../components/AuthLayout.bs.js");
 var Form__Input$ReactHooksTemplate = require("../components/Form__Input.bs.js");
 
-function Pages__Signin(Props) {
+function Pages__Signup(Props) {
   return React.createElement(AuthLayout$ReactHooksTemplate.make, {
-              title: "signin",
+              title: "signup",
               children: null,
               onSubmit: (function (e) {
                   var username = e.currentTarget.username.value;
+                  var email = e.currentTarget.email.value;
                   var password = e.currentTarget.password.value;
-                  fetch(window.location.origin + "/auth/signin", Fetch.RequestInit[/* make */0](/* Post */2, {
+                  var repeat_password = e.currentTarget.repeat_password.value;
+                  fetch(window.location.origin + "/auth/signup", Fetch.RequestInit[/* make */0](/* Post */2, {
                                     "Content-Type": "application/json"
-                                  }, Caml_option.some(Json.stringify(JMySon$ReactHooksTemplate.Encode[/* log_user */1](username, password))), undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined)(/* () */0)).then((function (prim) {
+                                  }, Caml_option.some(Json.stringify(JMySon$ReactHooksTemplate.Encode[/* reg_user */0](username, email, password, repeat_password))), undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined)(/* () */0)).then((function (prim) {
                               return prim.json();
                             })).then((function (x) {
                             return Promise.resolve(JMySon$ReactHooksTemplate.Decode[/* response */0](x));
@@ -30,21 +32,31 @@ function Pages__Signin(Props) {
                         }));
                   return /* () */0;
                 }),
-              btnValue: "Signin"
+              btnValue: "Signup"
             }, React.createElement(Form__Input$ReactHooksTemplate.make, {
                   name: "username",
                   type_: "text",
                   placeholder: "username",
                   label: "username"
                 }), React.createElement(Form__Input$ReactHooksTemplate.make, {
+                  name: "email",
+                  type_: "email",
+                  placeholder: "email@derivative.com",
+                  label: "email@derivative.com"
+                }), React.createElement(Form__Input$ReactHooksTemplate.make, {
                   name: "password",
                   type_: "password",
                   placeholder: "password",
                   label: "password"
+                }), React.createElement(Form__Input$ReactHooksTemplate.make, {
+                  name: "repeat_password",
+                  type_: "password",
+                  placeholder: "repeat password",
+                  label: "repeat password"
                 }));
 }
 
-var make = Pages__Signin;
+var make = Pages__Signup;
 
 exports.make = make;
 /* react Not a pure module */

@@ -22,7 +22,7 @@ export class UsersManager {
     const data = readFileSync(this.filePath, {
       encoding: 'utf-8',
     })
-    this.users = this.translate_from_json(JSON.parse(data))
+    this.users = this.translate_from_json(JSON.parse(data || '{}'))
   }
 
   private translate_from_json(json: HashMap): HashMap<User> {
@@ -47,9 +47,15 @@ export class UsersManager {
 
     const m = new Map(Object.entries(json))
     const uniques: HashMap<User> = {}
-    for (const k in m) {
-      const tv = translate(k, m.get(k))
-      typeof tv !== 'undefined' && (uniques[k] = tv)
+    for (const k of m.keys()) {
+      const u = (m.get(k) as any) as User
+      const o = {} as User & HashMap
+      for (const key in u) {
+        const tv = translate(key, u[key as keyof User] as string)
+        typeof tv !== 'undefined' && (o[key as any] = tv)
+      }
+
+      uniques[k] = o
     }
 
     return uniques
@@ -79,7 +85,7 @@ export class UsersManager {
             _id: id,
             username,
             email,
-            active: false,
+            active: true,
             password: pass,
           }
           this.users[id] = u
@@ -113,8 +119,8 @@ export class UsersManager {
 
   saveData(): Promise<void> {
     return new Promise((res, rej) => {
-      const data = JSON.stringify(this.users)
-      fs.writeFile(this.filePath, data, { encoding: 'tf-8' })
+      const data = JSON.stringify(this.users, null, 2)
+      fs.writeFile(this.filePath, data, { encoding: 'utf-8' })
         .then(res)
         .catch(rej)
     })

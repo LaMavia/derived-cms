@@ -7,6 +7,7 @@ var Layout$ReactHooksTemplate = require("./components/Layout.bs.js");
 var Pages__404$ReactHooksTemplate = require("./pages/Pages__404.bs.js");
 var Pages__Index$ReactHooksTemplate = require("./pages/Pages__Index.bs.js");
 var Pages__Signin$ReactHooksTemplate = require("./pages/Pages__Signin.bs.js");
+var Pages__Signup$ReactHooksTemplate = require("./pages/Pages__Signup.bs.js");
 
 function Router(Props) {
   var url = ReasonReactRouter.useUrl(undefined, /* () */0);
@@ -16,8 +17,25 @@ function Router(Props) {
   if (match) {
     if (match[0] === "auth") {
       var match$1 = match[1];
-      if (match$1 && match$1[0] === "signin" && !match$1[1]) {
-        tmp = React.createElement(Pages__Signin$ReactHooksTemplate.make, { });
+      if (match$1) {
+        switch (match$1[0]) {
+          case "signin" : 
+              if (match$1[1]) {
+                exit = 1;
+              } else {
+                tmp = React.createElement(Pages__Signin$ReactHooksTemplate.make, { });
+              }
+              break;
+          case "signup" : 
+              if (match$1[1]) {
+                exit = 1;
+              } else {
+                tmp = React.createElement(Pages__Signup$ReactHooksTemplate.make, { });
+              }
+              break;
+          default:
+            exit = 1;
+        }
       } else {
         exit = 1;
       }

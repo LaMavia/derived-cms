@@ -15,7 +15,7 @@ function AuthLayout(Props) {
             }, React.createElement("img", {
                   className: "auth__img",
                   alt: "Photo by icon0.com from Pexels",
-                  src: "/images/auth_bg_4.jpg"
+                  src: "/static/images/auth_bg_6.jpg"
                 }), React.createElement("form", {
                   className: "auth__form",
                   action: "",

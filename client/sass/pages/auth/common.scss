@@ -4,12 +4,8 @@
   --auth-item-h: 2.5rem;
 }
 
-.nav {
-  visibility: hidden;
-}
-
 .auth {
-  position: absolute;
+  position: fixed;
   left: 0;
   top: 0;
   width: 100vw;
@@ -22,6 +18,7 @@
     height: 100%;
     background-position: center;
     flex-shrink: 1;
+    filter: blur(1px) saturate(110%);
   }
 
   &__form {
@@ -35,7 +32,7 @@
     flex-flow: column nowrap;
     align-items: center;
     padding: 60px var(--auth-form-pd);
-    box-shadow: 0 0 7px 1px rgba(21, 21, 21, 0.6);
+    box-shadow: 0 0 4px 1px rgba(21, 21, 21, 0.4);
 
     &__title {
       font-size: 3rem;
@@ -54,39 +51,54 @@
       border: none;
     }
 
-    &__input {
-      border: none;
-      background-color: #eeeeee;
-      border-radius: 5px;
-      height: var(--auth-item-h);
-      font-size: 1rem;
-      padding-left: 10px;
-      margin: 12px;
+    &__label {
+      margin: 12px 0;
+      width: 100%;
+      font-size: 0.8rem;
+      
+      &__input {
+        padding-left: 10px;
+        border: none;
+        background-color: #eeeeee;
+        height: var(--auth-item-h);
+        font-size: 1rem;
+        border-bottom: 1px solid #4f4f4f;
+        width: 100%;
+
+        &::placeholder {
+          font-style: italic;
+        }
+      }
     }
 
     &__btn {
-      border-radius: 5px;
+      border: none;
       width: 80%;
       appearance: none;
       height: var(--auth-item-h);
 
       &--submit {
+        background-color: #2c2c2c;
+        color: #fefefe;
+        text-transform: uppercase;
+        font-weight: 500;
+        cursor: pointer;
       }
     }
   }
 }
 
-
 @keyframes btn-click {
   0% {
-    
+    color: #fefefe;
+    background-image: radial-gradient(#ffffff 0%, #2c2c2c 0%);
   }
 
   99% {
-
+    color: #fefefe;
+    background-image: radial-gradient(#ffffff 100%, #2c2c2c 100%);
   }
 
   100% {
-
   }
 }

@@ -2,7 +2,7 @@
 let make = (~title, ~children, ~onSubmit, ~btnValue) => {
   <section className="auth">
     <img
-      src="/images/auth_bg_4.jpg"
+      src="/static/images/auth_bg_6.jpg"
       alt="Photo by icon0.com from Pexels"
       className="auth__img"
     />

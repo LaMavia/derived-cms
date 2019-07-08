@@ -7,15 +7,15 @@ function str(prim) {
   return prim;
 }
 
-var $$Location = /* module */[];
-
 function useState(initial) {
   return React.useReducer((function (_ignored, newState) {
                 return newState;
               }), initial);
 }
 
+var $$Location = /* module */[];
+
 exports.str = str;
-exports.$$Location = $$Location;
 exports.useState = useState;
+exports.$$Location = $$Location;
 /* react Not a pure module */

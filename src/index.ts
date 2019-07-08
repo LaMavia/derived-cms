@@ -5,8 +5,10 @@ import emoji from 'node-emoji'
 import KoaStatic from 'koa-static'
 import cors from '@koa/cors'
 import KoaLogger from 'koa-logger'
+import KoaBody from 'koa-body'
 import fs from 'fs-extra'
 import jwt from 'koa-jwt'
+import mount from 'koa-mount'
 import {
   vName,
   symbol,
@@ -30,14 +32,15 @@ import { DbInterface } from './class/DbInterface'
 import { MongoDatabase } from './components/database'
 import { KoaConext, KoaState, secret } from './context'
 import { UsersManager } from './components/users'
+import { sessionMiddleware } from './middleware/session'
+import { SessionStorage } from './components/sessionStorage'
 ;(async () => {
   const app = new Koa<KoaState, KoaConext>()
   const router = new KoaRouter<KoaState, KoaConext>()
 
   const staticDir = resolve('./client/build')
-  const staticServer = KoaStatic(staticDir)
-
   const dataDir = resolve('./data')
+
   process.env['DC_DATA_PATH'] = dataDir
   const schemas: HashMap<Model> = await fs
     .readFile(resolve(dataDir, 'models.json'), 'utf-8')
@@ -55,7 +58,7 @@ import { UsersManager } from './components/users'
   router
     .use(index.middleware())
     // -------- Guarded Routes [exc: auth/signup, auth/signin] -------- //
-    .use(jwt({ secret }).unless({ path: [/sign/] }))
+    // .use(jwt({ secret }).unless({ path: [/sign/] }))
     .use(dbApi.middleware())
     .use(authRouter.middleware())
 
@@ -82,6 +85,7 @@ import { UsersManager } from './components/users'
   app.context.db = db
   app.context.usersManager = usersManager
   app.context.secret = secret
+  app.context.sessionsManager = new SessionStorage(app)
 
   app
     .use(
@@ -90,7 +94,9 @@ import { UsersManager } from './components/users'
       })
     )
     .use(KoaLogger())
-    .use(staticServer)
+    .use(KoaBody())
+    .use(mount('/static', KoaStatic(staticDir, {})))
+    .use(sessionMiddleware([/\/auth/]))
     .use(router.middleware())
     .use(router.allowedMethods())
     .listen(port)
