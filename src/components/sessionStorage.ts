@@ -2,6 +2,7 @@ import Keygrip from 'keygrip'
 import { randomBytes } from 'crypto'
 import Koa, { Middleware, ParameterizedContext } from 'koa'
 import { KoaConext, rand } from '../context'
+import fjs from "fast-json-stringify"
 
 /** Session
  * [session_id] => Session
@@ -16,6 +17,19 @@ export interface Session extends HashMap<any> {
 export const makeSession = (maxAge: number, jwt: string): Session => ({
   maxAge,
   jwt,
+})
+
+export const stringifySession = fjs({
+  title: "session",
+  type: "object",
+  properties: {
+    maxAge: {
+      type: "integer"
+    },
+    jwt: {
+      type: "string"
+    }
+  }
 })
 
 export class SessionStorage {
@@ -58,6 +72,9 @@ export class SessionStorage {
       sameSite: true,
       httpOnly: true,
       signed: true,
+      expires: new Date(
+        new Date().valueOf() + (this.store.get(sid) as Session).maxAge
+      ),
     })
   }
 }

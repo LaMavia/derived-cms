@@ -10,6 +10,7 @@ export class MongoDatabase extends DbInterface {
 
   constructor(models: HashMap<Model>) {
     super(models)
+    
     this.uri = process.env['DC_DATABASE_URL'] || ''
 
     if (!this.uri) throw new Error('DC_DATABASE_URL missing from .env')

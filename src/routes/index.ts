@@ -10,6 +10,7 @@ const template = `
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>DerivedCMS</title>
+  <link rel="icon" href="/static/images/icon.png">
   <link rel="stylesheet" href="/static/css/index.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
 </head>
@@ -21,7 +22,7 @@ const template = `
 `
 
 r.get('Index', '/*', ctx => {
-  !ctx.body && (ctx.body = template)
+  ctx.body = template
 })
 
 export default r

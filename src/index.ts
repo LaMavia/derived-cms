@@ -7,8 +7,10 @@ import cors from '@koa/cors'
 import KoaLogger from 'koa-logger'
 import KoaBody from 'koa-body'
 import fs from 'fs-extra'
-import jwt from 'koa-jwt'
 import mount from 'koa-mount'
+import helmet from 'koa-helmet'
+// @ts-ignore
+import op from 'overload-protection'
 import {
   vName,
   symbol,
@@ -38,43 +40,29 @@ import { SessionStorage } from './components/sessionStorage'
   const app = new Koa<KoaState, KoaConext>()
   const router = new KoaRouter<KoaState, KoaConext>()
 
-  const staticDir = resolve('./client/build')
-  const dataDir = resolve('./data')
+  // -------- Prepare the Environment -------- //
+  dotenv.config({
+    debug: true,
+  })
+  const isEnvVar = /^DC_/
+  const port = +(process.env['DC_PORT'] || 8000)
+  const staticDir = process.env['DC_STATIC_PATH'] || resolve('./client/build')
+  const dataDir = process.env['DC_DATA_PATH'] || resolve('./data')
 
-  process.env['DC_DATA_PATH'] = dataDir
-  const schemas: HashMap<Model> = await fs
+  // -------- Load the data -------- //
+
+  const models: HashMap<Model> = await fs
     .readFile(resolve(dataDir, 'models.json'), 'utf-8')
     // Preventing JSON.parse error, when the app is being initialized for the first time
-    .then(data => {
-      console.log(data)
-      return JSON.parse(data || '{}')
-    })
+    .then(data => JSON.parse(data || '{}'))
     .catch(err => {
       console.error(err)
       return {}
     })
 
-  // Join routers
-  router
-    .use(index.middleware())
-    // -------- Guarded Routes [exc: auth/signup, auth/signin] -------- //
-    // .use(jwt({ secret }).unless({ path: [/sign/] }))
-    .use(dbApi.middleware())
-    .use(authRouter.middleware())
-
-  dotenv.config({
-    debug: true,
-  })
-
-  const port = +(process.env['DC_PORT'] || 8000)
-  const isEnvVar = /^DC_/
-
   // -------- Init Database -------- //
-  const db: DbInterface = new MongoDatabase(schemas)
+  const db: DbInterface = new MongoDatabase(models)
   await db.connect()
-
-  // -------- Init UsersManager -------- //
-  const usersManager = new UsersManager()
 
   // -------- Init "CRON" jobs -------- //
   // setInterval(() => {
@@ -83,11 +71,12 @@ import { SessionStorage } from './components/sessionStorage'
 
   // -------- Init Context -------- //
   app.context.db = db
-  app.context.usersManager = usersManager
+  app.context.usersManager = new UsersManager()
   app.context.secret = secret
   app.context.sessionsManager = new SessionStorage(app)
 
   app
+    // .use(helmet())
     .use(
       cors({
         origin: '*',
@@ -95,9 +84,15 @@ import { SessionStorage } from './components/sessionStorage'
     )
     .use(KoaLogger())
     .use(KoaBody())
-    .use(mount('/static', KoaStatic(staticDir, {})))
+    .use(mount('/static', KoaStatic(staticDir)))
+    .use(authRouter.middleware())
     .use(sessionMiddleware([/\/auth/]))
-    .use(router.middleware())
+    .use(
+      router
+        .use(index.routes())
+        .use(dbApi.routes())
+        .middleware()
+    )
     .use(router.allowedMethods())
     .listen(port)
     .on('listening', () => {

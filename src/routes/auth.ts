@@ -9,18 +9,6 @@ const r = new Router<any, KoaConext>({
 
 const defaultAge = 24 * 60 * 60 * 1000
 
-r.use(async (ctx, next) => {
-  const c = ctx.cookies.get(SessionStorage.key, {
-    signed: true,
-  })
-  if (c) {
-    ctx.status = 302
-    return ctx.redirect(ctx.origin)
-  } else {
-    return await next()
-  }
-})
-
 r.post('/signin', async ctx => {
   const { username, password } = ctx.request.body
 

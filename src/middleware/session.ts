@@ -1,7 +1,11 @@
 import { Middleware } from 'koa'
 import { KoaConext } from '../context'
-import jwt from 'jsonwebtoken'
-import { Session, SessionStorage } from '../components/sessionStorage'
+import {
+  Session,
+  SessionStorage,
+  stringifySession,
+  makeSession,
+} from '../components/sessionStorage'
 
 const key = SessionStorage.key
 const redirect = '/auth/signin'
@@ -21,37 +25,87 @@ const compareSessions = (s1: Session, s2: Session): boolean => {
 
 export const sessionMiddleware: (
   allowedUrls: RegExp[] | undefined
-) => Middleware<any, KoaConext> = (allowedUrls: RegExp[] = []) => async (
-  ctx,
-  next
-) => {
-  const sid = ctx.cookies.get(key, {
-    signed: true,
-  })
+) => Middleware<any, KoaConext> = (allowedUrls: RegExp[] = []) => {
+  const allowed = new RegExp(
+    `(${allowedUrls.map(r => r.source).join('|')})`,
+    'gi'
+  )
+  const isAuthRoute = /auth/
+  return async (ctx, next) => {
+    if (ctx.body) return
+    const sid = ctx.cookies.get(key)
+    const session = sid && ctx.sessionsManager.get(sid)
 
-  // -------- Sesion doesn't exist -------- //
-  if (sid) {
-    ctx.session = ctx.sessionsManager.get(sid)
+    if (sid && session) {
+      ctx.session = session
+      if (isAuthRoute.test(ctx.path)) {
+        ctx.status = 302
+        ctx.redirect('back')
+      } else {
+        const old = stringifySession(session)
+        await next()
+        if (!ctx.session || old !== stringifySession(ctx.session)) {
+          let newSession: Session
+          if (
+            ctx.session == null ||
+            !(ctx.session || typeof ctx.session === undefined)
+          )
+            newSession = makeSession(24 * 60 * 60 * 1000, JSON.parse(old).jwt)
+          else newSession = ctx.session
 
-    if (!ctx.session) {
-      // Clean the cookie
-      // @ts-ignore
-      ctx.cookies.set(key, null)
-      ctx.status = 302
-      return ctx.redirect(redirect)
-    } else {
-      const old = Object.assign({}, ctx.session)
-      await next()
-      if (!compareSessions(old, ctx.session)) {
-        const nsid = ctx.sessionsManager.set(sid, ctx.session)
-        ctx.sessionsManager.set_key(nsid, ctx)
+          const nsid = ctx.sessionsManager.set(sid, newSession)
+
+          ctx.sessionsManager.set_key(nsid, ctx)
+        }
       }
-    }
-  } else if (allowedUrls.some(u => u.test(ctx.path))) {
-    return next()
-  } else {
-    ctx.status = 302
-    ctx.headers.follow = true
-    return ctx.redirect(redirect)
+    } else if (!isAuthRoute.test(ctx.path)) {
+      ctx.status = 302
+      ctx.redirect('/auth/signin')
+    } else next()
   }
 }
+
+/**
+ * const sid =
+      ctx.cookies.get(key, {
+        signed: true,
+      }) || ctx.cookies.get(key)
+
+    // -------- Sesion doesn't exist -------- //
+    if (sid) {
+      ctx.session = ctx.sessionsManager.get(sid)
+
+      // -------- session has expired, clean the cookie -------- //
+      if (typeof ctx.session === 'undefined') {
+        // @ts-ignore, because it doesn't allow "null", but it works
+        // @ts-ignore
+        ctx.cookies.set(key, null, {
+          sameSite: true,
+          httpOnly: true,
+          signed: true,
+        })
+      }
+      // -------- Prevent loggedin users from accessing the signin/up forms -------- //
+      else if (/\/auth/.test(ctx.path)) {
+        ctx.status = 302
+        return ctx.redirect('/')
+      }
+      // -------- Mannage session -------- //
+      else {
+        const old = stringifySession(ctx.session) // Object.assign({}, ctx.session)
+        await next()
+        if (old !== stringifySession(ctx.session)) {
+          const nsid = ctx.sessionsManager.set(sid, ctx.session)
+          ctx.sessionsManager.set_key(nsid, ctx)
+        }
+      }
+    }
+    // -------- Redirect not loggedin users to the signin form -------- //
+    else if (allowed.test(ctx.url)) {
+      return next()
+    } else {
+      ctx.status = 302
+      return ctx.redirect(redirect)
+    }
+    }
+ */
