@@ -1,7 +1,7 @@
 import Router from 'koa-router'
 import { KoaConext } from '../context'
 import jwt from 'jsonwebtoken'
-import { makeSession, SessionStorage } from '../components/sessionStorage'
+import { makeSession } from '../components/sessionStorage'
 
 const r = new Router<any, KoaConext>({
   prefix: '/auth',

@@ -2,20 +2,15 @@
 'use strict';
 
 var React = require("react");
-var Helpers$ReactHooksTemplate = require("../Helpers.bs.js");
 
-function Pages__Collection(Props) {
+function Pages__Collection__Overview(Props) {
   Props.modelName;
-  Helpers$ReactHooksTemplate.useState(/* array */[]);
-  React.useEffect((function () {
-          return undefined;
-        }), ([]));
   return React.createElement("div", {
               className: "content__posts"
             });
 }
 
-var make = Pages__Collection;
+var make = Pages__Collection__Overview;
 
 exports.make = make;
 /* react Not a pure module */

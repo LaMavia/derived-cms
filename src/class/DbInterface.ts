@@ -1,5 +1,10 @@
 type Json = Array<HashMap<any>> | HashMap<any>
 
+export interface CollectionStats {
+  size: [number, string]
+  count: number
+}
+
 export abstract class DbInterface {
   models: HashMap<Model>
   constructor(models: HashMap<Model>) {
@@ -44,6 +49,8 @@ export abstract class DbInterface {
     key: string,
     newKey: string
   ): Promise<any>
+
+  public abstract stats(collection: string): Promise<CollectionStats>
 
   public abstract save_schemas(): Promise<void>
 

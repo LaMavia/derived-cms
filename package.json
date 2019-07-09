@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon -w ./src/ --exec \"ts-node ./src/index.ts\""
+    "start": "nodemon -w ./src/ --exec \"ts-node ./src/index.ts\"",
+    "mt": "nodemon -w ./src/ --exec \"ts-node ./src/server.ts\""
   },
   "keywords": [],
   "author": "",
@@ -47,7 +48,7 @@
     "@types/koa-static": "^4.0.1",
     "@types/koa__cors": "^2.2.3",
     "@types/mongoose": "^5.5.7",
-    "@types/node": "^12.0.12",
+    "@types/node": "^12.6.1",
     "@types/node-emoji": "^1.8.1",
     "ts-node": "^8.3.0",
     "typescript": "^3.5.2"

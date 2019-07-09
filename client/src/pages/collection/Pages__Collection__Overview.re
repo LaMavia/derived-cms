@@ -27,9 +27,5 @@ open Helpers;
 
 [@react.component]
 let make = (~modelName) => {
-  let (items, setItems) = useState([||]);
-
-  React.useEffect0(() => None);
-
   <div className="content__posts" />;
 };

@@ -12,8 +12,8 @@ interface Model {
 declare type Schemas = HashMap<Schema>
 declare type Json = string
 
-declare interface APIResponse {
-  data: Json
+declare interface APIResponse<DataT = Array<HashMap<any>>> {
+  data?: DataT
   error?: string
   ok: boolean
 }

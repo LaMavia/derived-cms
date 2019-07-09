@@ -1,6 +1,6 @@
 import { DbInterface } from './class/DbInterface'
-import { UsersManager } from './components/users';
-import { SessionStorage, Session } from './components/sessionStorage';
+import { UsersManager } from './components/users'
+import { SessionStorage, Session } from './components/sessionStorage'
 /**
  * This file is a sort of workaround the .d.ts import issue.
  * They don't allow for importing classes etc.
@@ -16,7 +16,7 @@ export const rand = () =>
 
 export const secret: string = new Array(10)
   .fill(0)
-  .reduce((acc, _) => (acc += rand()), '')
+  .reduce(acc => (acc += rand()), '')
 
 export interface KoaConext {
   db: DbInterface

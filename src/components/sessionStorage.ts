@@ -19,19 +19,6 @@ export const makeSession = (maxAge: number, jwt: string): Session => ({
   jwt,
 })
 
-export const stringifySession = fjs({
-  title: "session",
-  type: "object",
-  properties: {
-    maxAge: {
-      type: "integer"
-    },
-    jwt: {
-      type: "string"
-    }
-  }
-})
-
 export class SessionStorage {
   private store = new Map<string, Session>()
   private timers = new Map<string, NodeJS.Timeout>()

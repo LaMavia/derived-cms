@@ -21,7 +21,7 @@ const template = `
 </html>
 `
 
-r.get('Index', '/*', ctx => {
+r.get('Index', '/*', async ctx => {
   ctx.body = template
 })
 

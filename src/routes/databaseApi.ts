@@ -1,7 +1,6 @@
 import Router from 'koa-router'
 import { KoaConext, secret } from '../context'
-import jwt from 'koa-jwt'
-import jsonwebtoken from 'jsonwebtoken'
+import * as str from '../helpers/jmyson'
 
 const r = new Router<any, KoaConext>({
   prefix: '/db_api/',
@@ -18,12 +17,12 @@ r.get('all/:model', async (ctx, _next) => {
 
   if (!model) {
     const res: APIResponse = {
-      data: '',
+      data: undefined,
       error: `/all/:model | param "model" not specified`,
       ok: false,
     }
 
-    ctx.body = JSON.stringify(res)
+    ctx.body = str.api_error(res)
   } else {
     ctx.body = JSON.stringify(
       await ctx.db
@@ -45,7 +44,7 @@ r.get('all/:model', async (ctx, _next) => {
   }
 })
 
-r.get('models', ctx => {
+r.get('models', async ctx => {
   const data = []
 
   const q = typeof ctx.query['models'] === 'string' ? ctx.query['models'] : ''
@@ -60,11 +59,78 @@ r.get('models', ctx => {
     data.push(ctx.db.models[modelName])
   }
 
+  // Using fast-json-stringify wouldn't bring any perf. boost, because models' keys are dynamic (each model is different)
   ctx.body = JSON.stringify({
     data,
     ok: true,
     error: '',
   })
+})
+
+r.get('stats/:model', async ctx => {
+  const model: string | undefined = ctx.params['model']
+
+  if (!model) {
+    const res: APIResponse = {
+      data: undefined,
+      error: `stats/:model | param "model" not specified`,
+      ok: false,
+    }
+
+    ctx.body = str.api_error(res)
+  } else {
+    const stats = await ctx.db.stats(model).catch(err => err as Error)
+    if (stats instanceof Error)
+      ctx.body = str.api_error({
+        data: undefined,
+        error: stats.message,
+        ok: false,
+      })
+    else {
+      ctx.body = str.api_stats_res({
+        data: stats,
+        error: '',
+        ok: true,
+      })
+    }
+  }
+})
+
+r.get('collection/:model/overview', async ctx => {
+  const model: string | undefined = ctx.params['model']
+
+  if (!model) {
+    const res: APIResponse = {
+      data: undefined,
+      error: `collection/:model/overview | param "model" not specified`,
+      ok: false,
+    }
+
+    ctx.body = str.api_error(res)
+  } else {
+    const rs = await Promise.all([
+      ctx.db.stats(model),
+      ctx.db.models[model],
+    ]).catch(err => new Error(err))
+
+    if (rs instanceof Error) {
+      ctx.body = str.api_error({
+        data: undefined,
+        error: `${rs.message};\n${rs.stack}`,
+        ok: false,
+      })
+    } else {
+      const [stats, schema] = rs
+      ctx.body = JSON.stringify({
+        data: {
+          stats,
+          ...schema,
+        },
+        error: '',
+        ok: true,
+      })
+    }
+  }
 })
 
 export default r

@@ -3,6 +3,7 @@ import { resolve } from 'path'
 import { rand } from '../context'
 import fs from 'fs-extra'
 import bcrypt from 'bcrypt'
+import * as str from "../helpers/jmyson"
 /**
  * {User} Schema translated by UsersManager::translate_from_json
  */

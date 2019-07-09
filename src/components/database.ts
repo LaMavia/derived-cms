@@ -1,4 +1,4 @@
-import { DbInterface } from '../class/DbInterface'
+import { DbInterface, CollectionStats } from '../class/DbInterface'
 import mongo from 'mongoose'
 import fs from 'fs-extra'
 import { resolve } from 'path'
@@ -10,7 +10,7 @@ export class MongoDatabase extends DbInterface {
 
   constructor(models: HashMap<Model>) {
     super(models)
-    
+
     this.uri = process.env['DC_DATABASE_URL'] || ''
 
     if (!this.uri) throw new Error('DC_DATABASE_URL missing from .env')
@@ -87,7 +87,6 @@ export class MongoDatabase extends DbInterface {
         .collection(collection)
         .find(filters)
         .toArray()
-
         .then(res)
         .catch(rej)
     })
@@ -103,7 +102,6 @@ export class MongoDatabase extends DbInterface {
       this.connection
         .collection(collection)
         .findOne(filters)
-
         .then(res)
         .catch(rej)
     })
@@ -119,7 +117,6 @@ export class MongoDatabase extends DbInterface {
       this.connection
         .collection(collection)
         .updateMany(filters, values)
-
         .then(res)
         .catch(rej)
     })
@@ -135,7 +132,6 @@ export class MongoDatabase extends DbInterface {
       this.connection
         .collection(collection)
         .updateOne(filters, values)
-
         .then(res)
         .catch(rej)
     })
@@ -151,7 +147,6 @@ export class MongoDatabase extends DbInterface {
       this.connection
         .collection(collection)
         .deleteMany(filters)
-
         .then(res)
         .catch(rej)
     })
@@ -167,7 +162,6 @@ export class MongoDatabase extends DbInterface {
       this.connection
         .collection(collection)
         .deleteOne(filters)
-
         .then(res)
         .catch(rej)
     })
@@ -185,7 +179,6 @@ export class MongoDatabase extends DbInterface {
         .insert(values, {
           forceServerObjectId: true,
         })
-
         .then(res)
         .catch(rej)
     })
@@ -239,7 +232,6 @@ export class MongoDatabase extends DbInterface {
       this.connection
         .collection(name)
         .deleteMany({})
-
         .then(res)
         .catch(rej)
     })
@@ -298,7 +290,6 @@ export class MongoDatabase extends DbInterface {
             },
           }
         )
-
         .then(res)
         .catch(rej)
     })
@@ -325,6 +316,30 @@ export class MongoDatabase extends DbInterface {
     })
   }
 
+  stats(collection: string) {
+    return new Promise<CollectionStats>((res, rej) => {
+      if (!this.connection)
+        return rej(
+          "Database connection wasn't established; consider calling .connect()"
+        )
+
+      this.connection
+        .collection(collection)
+        .stats({
+          scale: 1024,
+        })
+        .then(
+          stats =>
+            ({
+              count: stats.count,
+              size: [stats.size, 'kb'],
+            } as CollectionStats)
+        )
+        .then(res)
+        .catch(rej)
+    })
+  }
+
   save_schemas() {
     return new Promise<void>((res, rej) => {
       console.log('Saving schemas')
@@ -339,7 +354,7 @@ export class MongoDatabase extends DbInterface {
           /**
            * @note Handle strings, because during translation to bson types, difference between "Text" and "String" is lost.
            */
-          if (v.name === "String") {
+          if (v.name === 'String') {
             toSave[k] = this.models[col].schema[k] || 'String'
           } else {
             toSave[k] = this.translate_mongo_to_field(v)
