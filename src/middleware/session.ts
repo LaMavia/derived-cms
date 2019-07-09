@@ -25,24 +25,19 @@ const compareSessions = (s1: Session, s2: Session): boolean => {
 
 export const sessionMiddleware: (
   allowedUrls: RegExp[] | undefined
-) => Middleware<any, KoaConext> = (allowedUrls: RegExp[] = []) => {
-  const allowed = new RegExp(
-    `(${allowedUrls.map(r => r.source).join('|')})`,
-    'gi'
-  )
+) => Middleware<any, KoaConext> = () => {
   const isAuthRoute = /auth/
   return async (ctx, next) => {
     if (ctx.body) return
     const sid = ctx.cookies.get(key)
-    const session = sid && ctx.sessionsManager.get(sid)
 
-    if (sid && session) {
-      ctx.session = session
+    if (sid && ctx.sessionsManager.has(sid)) {
+      ctx.session = ctx.sessionsManager.get(sid)
       if (isAuthRoute.test(ctx.path)) {
         ctx.status = 302
         ctx.redirect('back')
       } else {
-        const old = stringifySession(session)
+        const old = stringifySession(ctx.session as Session)
         await next()
         if (!ctx.session || old !== stringifySession(ctx.session)) {
           let newSession: Session

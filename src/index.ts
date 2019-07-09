@@ -89,8 +89,8 @@ import { SessionStorage } from './components/sessionStorage'
     .use(sessionMiddleware([/\/auth/]))
     .use(
       router
-        .use(index.routes())
         .use(dbApi.routes())
+        .use(index.routes())
         .middleware()
     )
     .use(router.allowedMethods())

@@ -1,9 +1,19 @@
 open JMySon;
 
+let textUnder = () =>
+  <p className="auth__form__text">
+    "Already have an account?"->Helpers.str
+    <br />
+    <a href="/auth/signin" className="auth__form__text__link">
+      "Login here!"->Helpers.str
+    </a>
+  </p>;
+
 [@react.component]
 let make = () => {
   <AuthLayout
     title="signup"
+    textUnder
     onSubmit={e => {
       let username: string = e->ReactEvent.Form.currentTarget##username##value;
       let email: string = e->ReactEvent.Form.currentTarget##email##value;
@@ -52,7 +62,7 @@ let make = () => {
       placeholder="username"
     />
     <Form__Input
-      label="email@derivative.com"
+      label="e-mail"
       type_="email"
       placeholder="email@derivative.com"
       name="email"

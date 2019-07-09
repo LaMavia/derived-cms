@@ -1,10 +1,20 @@
+@import '../../atoms/breakpoints.scss';
+
 :root {
   --auth-form-w: 24rem;
   --auth-form-pd: 40px;
   --auth-item-h: 2.5rem;
 }
 
+@include mobile {
+  :root {
+    --auth-form-w: 100vw;
+  }
+}
+
 .auth {
+  --x: 0;
+  --y: 0;
   position: fixed;
   left: 0;
   top: 0;
@@ -13,12 +23,20 @@
   display: flex;
   overflow: hidden;
   flex-flow: row nowrap;
+  perspective: 1000px;
+  transform-style: preserve-3d;
 
   &__img {
     height: 100%;
     background-position: center;
     flex-shrink: 1;
     filter: blur(1px) saturate(110%);
+    transform: scale(1.2) translateZ(-5px)
+      translate(calc(var(--x) * 1px), calc(var(--y) * 1px));
+    transition: transform .1s 0s linear;
+    @include reduced-motion {
+      transform: none;
+    }
   }
 
   &__form {
@@ -55,7 +73,7 @@
       margin: 12px 0;
       width: 100%;
       font-size: 0.8rem;
-      
+
       &__input {
         padding-left: 10px;
         border: none;
@@ -84,6 +102,12 @@
         font-weight: 500;
         cursor: pointer;
       }
+    }
+
+    &__text {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 0.8rem;
     }
   }
 }

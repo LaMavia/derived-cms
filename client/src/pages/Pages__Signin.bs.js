@@ -7,8 +7,18 @@ var React = require("react");
 var Caml_option = require("bs-platform/lib/js/caml_option.js");
 var ReasonReactRouter = require("reason-react/src/ReasonReactRouter.js");
 var JMySon$ReactHooksTemplate = require("../JMySon.bs.js");
+var Helpers$ReactHooksTemplate = require("../Helpers.bs.js");
 var AuthLayout$ReactHooksTemplate = require("../components/AuthLayout.bs.js");
 var Form__Input$ReactHooksTemplate = require("../components/Form__Input.bs.js");
+
+function textUnder(param) {
+  return React.createElement("p", {
+              className: "auth__form__text"
+            }, Helpers$ReactHooksTemplate.str("Don't have an account yet?"), React.createElement("br", undefined), React.createElement("a", {
+                  className: "auth__form__text__link",
+                  href: "/auth/signup"
+                }, Helpers$ReactHooksTemplate.str("Register here!")));
+}
 
 function Pages__Signin(Props) {
   return React.createElement(AuthLayout$ReactHooksTemplate.make, {
@@ -30,7 +40,8 @@ function Pages__Signin(Props) {
                         }));
                   return /* () */0;
                 }),
-              btnValue: "Signin"
+              btnValue: "Signin",
+              textUnder: textUnder
             }, React.createElement(Form__Input$ReactHooksTemplate.make, {
                   name: "username",
                   type_: "text",
@@ -46,5 +57,6 @@ function Pages__Signin(Props) {
 
 var make = Pages__Signin;
 
+exports.textUnder = textUnder;
 exports.make = make;
 /* react Not a pure module */

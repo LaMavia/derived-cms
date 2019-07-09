@@ -3,6 +3,7 @@
 
 var Curry = require("bs-platform/lib/js/curry.js");
 var React = require("react");
+var ReactDOMRe = require("reason-react/src/ReactDOMRe.js");
 var Helpers$ReactHooksTemplate = require("../Helpers.bs.js");
 
 function AuthLayout(Props) {
@@ -10,8 +11,23 @@ function AuthLayout(Props) {
   var children = Props.children;
   var onSubmit = Props.onSubmit;
   var btnValue = Props.btnValue;
+  var textUnder = Props.textUnder;
+  var match = Helpers$ReactHooksTemplate.useState(/* tuple */[
+        0,
+        0
+      ]);
+  var setpos = match[1];
+  var match$1 = match[0];
+  var style = ReactDOMRe.Style[/* unsafeAddProp */1](ReactDOMRe.Style[/* unsafeAddProp */1]({ }, "--x", String(match$1[0])), "--y", String(match$1[1]));
   return React.createElement("section", {
-              className: "auth"
+              className: "auth",
+              style: style,
+              onMouseMove: (function (e) {
+                  return Curry._1(setpos, /* tuple */[
+                              e.clientX / -200 | 0,
+                              e.clientY / -200 | 0
+                            ]);
+                })
             }, React.createElement("img", {
                   className: "auth__img",
                   alt: "Photo by icon0.com from Pexels",
@@ -31,7 +47,7 @@ function AuthLayout(Props) {
                       className: "auth__form__btn auth__form__btn--submit",
                       type: "submit",
                       value: btnValue
-                    })));
+                    }), Curry._1(textUnder, /* () */0)));
 }
 
 var make = AuthLayout;

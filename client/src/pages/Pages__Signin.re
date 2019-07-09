@@ -1,9 +1,19 @@
 open JMySon;
 
+let textUnder = () =>
+  <p className="auth__form__text">
+    "Don't have an account yet?"->Helpers.str
+    <br/>
+    <a href="/auth/signup" className="auth__form__text__link">
+      "Register here!"->Helpers.str
+    </a>
+  </p>;
+
 [@react.component]
 let make = () => {
   <AuthLayout
     title="signin"
+    textUnder
     onSubmit={e => {
       let username: string = e->ReactEvent.Form.currentTarget##username##value;
       let password: string = e->ReactEvent.Form.currentTarget##password##value;

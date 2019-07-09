@@ -62,6 +62,10 @@ export class SessionStorage {
     return this.store.get(session_id)
   }
 
+  has(sid: string) {
+    return this.store.has(sid)
+  }
+
   destroy(sid: string) {
     this.store.delete(sid)
     this.timers.delete(sid)

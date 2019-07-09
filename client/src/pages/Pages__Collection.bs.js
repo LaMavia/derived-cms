@@ -7,6 +7,9 @@ var Helpers$ReactHooksTemplate = require("../Helpers.bs.js");
 function Pages__Collection(Props) {
   Props.modelName;
   Helpers$ReactHooksTemplate.useState(/* array */[]);
+  React.useEffect((function () {
+          return undefined;
+        }), ([]));
   return React.createElement("div", {
               className: "content__posts"
             });
