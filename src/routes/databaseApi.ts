@@ -96,6 +96,20 @@ r.get('stats/:model', async ctx => {
   }
 })
 
+r.get('labels', async ctx => {
+  const data = await ctx.db
+    .collections_all_labels()
+    .catch(err => new Error(err))
+
+  if (data instanceof Error)
+    ctx.body = str.api_error({
+      data: undefined,
+      error: data.message,
+      ok: false,
+    })
+  else ctx.body = str.api_str_arr(data)
+})
+
 r.get('collection/:model/overview', async ctx => {
   const model: string | undefined = ctx.params['model']
 
@@ -110,7 +124,7 @@ r.get('collection/:model/overview', async ctx => {
   } else {
     const rs = await Promise.all([
       ctx.db.stats(model),
-      ctx.db.models[model],
+      ctx.db.collections_wschemas([model]),
     ]).catch(err => new Error(err))
 
     if (rs instanceof Error) {
@@ -120,11 +134,12 @@ r.get('collection/:model/overview', async ctx => {
         ok: false,
       })
     } else {
-      const [stats, schema] = rs
+      const [stats, colmodel] = rs
       ctx.body = JSON.stringify({
         data: {
           stats,
-          ...schema,
+          collection: colmodel[0].collection,
+          schema: colmodel[0].schema,
         },
         error: '',
         ok: true,

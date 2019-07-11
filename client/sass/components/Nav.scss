@@ -63,7 +63,7 @@
 
     div {
       width: var(--nav-item-h);
-      fill: #ffffff;
+      fill: #ffffff; 
       transition: fill 0.15s 0s ease-in-out;
     }
   }
@@ -97,8 +97,12 @@
           height: var(--nav-item-icon-s);
 
           div {
-            width: 100%;
+            width: var(--nav-item-icon-s);
+            height: 100%;
             fill: #ffffff;
+            stroke: #ffffff;
+            display: flex;
+            justify-content: center;
           }
         }
 

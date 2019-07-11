@@ -4,11 +4,56 @@
 var Json_decode = require("@glennsl/bs-json/src/Json_decode.bs.js");
 var Json_encode = require("@glennsl/bs-json/src/Json_encode.bs.js");
 
-function response(json) {
+function auth_response(json) {
   return /* record */[/* id */Json_decode.field("id", Json_decode.string, json)];
 }
 
-var Decode = /* module */[/* response */response];
+function collection_stats(json) {
+  return /* record */[
+          /* count */Json_decode.field("count", Json_decode.$$int, json),
+          /* size */Json_decode.field("size", (function (param) {
+                  return Json_decode.pair(Json_decode.$$float, Json_decode.string, param);
+                }), json)
+        ];
+}
+
+function overview_state(json) {
+  return /* record */[
+          /* stats */Json_decode.field("stats", collection_stats, json),
+          /* collection */Json_decode.field("collection", Json_decode.string, json),
+          /* schema */Json_decode.field("schema", (function (param) {
+                  return Json_decode.array((function (param) {
+                                return Json_decode.pair(Json_decode.string, Json_decode.string, param);
+                              }), param);
+                }), json)
+        ];
+}
+
+function labels_response(json) {
+  return /* record */[
+          /* data */Json_decode.field("data", (function (param) {
+                  return Json_decode.array(Json_decode.string, param);
+                }), json),
+          /* error */Json_decode.field("error", Json_decode.string, json),
+          /* ok */Json_decode.field("ok", Json_decode.bool, json)
+        ];
+}
+
+function overview_response(json) {
+  return /* record */[
+          /* data */Json_decode.field("data", overview_state, json),
+          /* error */Json_decode.field("error", Json_decode.string, json),
+          /* ok */Json_decode.field("ok", Json_decode.bool, json)
+        ];
+}
+
+var Decode = /* module */[
+  /* auth_response */auth_response,
+  /* collection_stats */collection_stats,
+  /* overview_state */overview_state,
+  /* labels_response */labels_response,
+  /* overview_response */overview_response
+];
 
 function reg_user(username, email, password, repeat_password) {
   return Json_encode.object_(/* :: */[

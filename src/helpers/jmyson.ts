@@ -18,6 +18,20 @@ const make_api_stringifier = (dataType: Partial<str.Schema>) =>
     },
   })
 
+export const api_str_arr = (() => {
+  const s = make_api_stringifier({
+    type: "array",
+    items: {
+      type: "string"
+    }
+  })
+  return (data: string[]) => s({
+    data,
+    error: '',
+    ok: true
+  })
+})()
+
 export const api_error = (() => {
   const s = make_api_stringifier({
     type: 'object',

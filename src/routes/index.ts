@@ -19,7 +19,7 @@ const template = `
   <script src="/static/Index.js"></script>
 </body>
 </html>
-`
+`.replace(/>\s+/, ">")
 
 r.get('Index', '/*', async ctx => {
   ctx.body = template

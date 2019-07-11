@@ -5,6 +5,11 @@ export interface CollectionStats {
   count: number
 }
 
+export interface CollectionModel {
+  collection: string
+  schema: Array<[string, string]>
+}
+
 export abstract class DbInterface {
   models: HashMap<Model>
   constructor(models: HashMap<Model>) {
@@ -51,6 +56,12 @@ export abstract class DbInterface {
   ): Promise<any>
 
   public abstract stats(collection: string): Promise<CollectionStats>
+
+  public abstract collections_wschemas(collections?: string[]): Promise<CollectionModel[]>
+  /**
+   * @returns {String[]} Returns names of all collections
+   */
+  public abstract collections_all_labels(): Promise<string[]>
 
   public abstract save_schemas(): Promise<void>
 

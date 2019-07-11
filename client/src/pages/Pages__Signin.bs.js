@@ -32,7 +32,7 @@ function Pages__Signin(Props) {
                                   }, Caml_option.some(Json.stringify(JMySon$ReactHooksTemplate.Encode[/* log_user */1](username, password))), undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined)(/* () */0)).then((function (prim) {
                               return prim.json();
                             })).then((function (x) {
-                            return Promise.resolve(JMySon$ReactHooksTemplate.Decode[/* response */0](x));
+                            return Promise.resolve(JMySon$ReactHooksTemplate.Decode[/* auth_response */0](x));
                           })).then((function (r) {
                           console.log(r);
                           ReasonReactRouter.push("/");

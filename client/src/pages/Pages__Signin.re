@@ -36,7 +36,7 @@ let make = () => {
               ),
             )
           |> then_(Fetch.Response.json)
-          |> then_(x => x |> Decode.response |> resolve)
+          |> then_(x => x |> Decode.auth_response |> resolve)
           |> then_(r => {
                r |> Js.Console.log;
                ReasonReactRouter.push("/");

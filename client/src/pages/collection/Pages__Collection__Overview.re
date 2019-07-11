@@ -1,12 +1,16 @@
-open Helpers;
-
 /**
- "collection/:model" => overview 
+ "collection/:model" => overview
  { |layout: grid {2 cols, x rows}|
    1. number of entries -> "collection/:model/entries"
    2. storage size (mb / kb depending on the size <kb><-|1mb|-><mb><-|1gb|-><gb>)
    3. display  the schema [click -> edit schema]
    4. refresh button -> re-fetch the data
+   @done [
+     - api endpoint
+   ]
+   @todo [
+     - display
+   ]
  } ? data: [schema, collection-stats[size, count, ...]]
  "collection/:model/entries" => list of entries
  { // actions on enties ↓ //
@@ -24,8 +28,68 @@ open Helpers;
    display: { [key]: value } | actions: [delete, edit, edit_long, add_field]
  }
  */
+open Helpers;
+
+module Box = {
+  [@react.component]
+  let make = (~title, ~children, ~className="") => {
+    <article className={"content__overview__box " ++ className}>
+      <header className="content__overview__box__header">
+        <h1 className="content__overview__box__header__title"> title->str </h1>
+      </header>
+      <section className="content__overview__box__body"> children </section>
+    </article>;
+  };
+};
+
+let displaySchema: array((string, string)) => React.element =
+  schema =>
+    schema
+    ->Belt.Array.map(entry => {
+        let (key, prop) = entry; 
+        <> <span> {j|$(key) : $(prop)|j}->str </span> <br /> </>;
+      })
+    ->React.array;
+
+let format_size = (size: (float, string)) => {
+  let (a, b) = size;
+  let a = a->Js.Float.toString;
+  a ++ b;
+};
 
 [@react.component]
 let make = (~modelName) => {
-  <div className="content__posts" />;
+  open JMySon;
+  let (state: option(overview_state), setState) = useState(None);
+
+  React.useEffect0(() => {
+    ignore(
+      Js.Promise.(
+        Fetch.fetch({j|/db_api/collection/$(modelName)/overview|j})
+        |> then_(Fetch.Response.json)
+        |> then_(x => x->Decode.overview_response->resolve)
+        |> then_(x => x.data |> resolve)
+        |> then_(x => x->Some |> setState |> resolve)
+      ),
+    );
+    None;
+  });
+
+  <div className="content__overview">
+    {switch (state) {
+     | Some(state) =>
+       <>
+         <Box title="stats">
+           <span className="content__overview__box__body__text">
+             {("count: " ++ state.stats.count->string_of_int)->str}
+           </span>
+           <span className="content__overview__box__body__text">
+             {("size: " ++ state.stats.size->format_size)->str}
+           </span>
+         </Box>
+         <Box title="schema"> state.schema->displaySchema </Box>
+       </>
+     | None => <span> "loading..."->str </span>
+     }}
+  </div>;
 };

@@ -1,4 +1,8 @@
-import { DbInterface, CollectionStats } from '../class/DbInterface'
+import {
+  DbInterface,
+  CollectionStats,
+  CollectionModel,
+} from '../class/DbInterface'
 import mongo from 'mongoose'
 import fs from 'fs-extra'
 import { resolve } from 'path'
@@ -337,6 +341,45 @@ export class MongoDatabase extends DbInterface {
         )
         .then(res)
         .catch(rej)
+    })
+  }
+
+  collections_all_labels() {
+    return new Promise<string[]>((res, rej) => {
+      if (!this.connection)
+        return rej(
+          "Database connection wasn't established; consider calling .connect()"
+        )
+
+      res(Object.keys(this.models))
+    })
+  }
+
+  collections_wschemas(collections?: string[]) {
+    return new Promise<CollectionModel[]>((res, rej) => {
+      if (!this.connection)
+        return rej(
+          "Database connection wasn't established; consider calling .connect()"
+        )
+
+      let ks = Object.keys(this.models)
+      if (collections && collections.length)
+        ks = ks.filter(k => collections.some(c => k === c))
+
+      res(
+        ks.reduce(
+          (acc, k) => {
+            const m = this.models[k]
+            const schema = Object.entries(m.schema)
+            acc.push({
+              collection: m.collection,
+              schema,
+            })
+            return acc
+          },
+          [] as CollectionModel[]
+        )
+      )
     })
   }
 

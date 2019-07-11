@@ -13,11 +13,25 @@
     overflow-x: hidden;
     transition: width 0.15 0s ease-in-out;
     will-change: width;
+
+    & > * {
+      animation: show .3s 0s ease-in-out;
+    }
   }
 }
 
 .collapsed {
   .content {
     width: calc(100vw - var(--nav-collapsed-w));
+  }
+}
+
+@keyframes show {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
   }
 }

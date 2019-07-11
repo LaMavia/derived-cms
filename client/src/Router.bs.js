@@ -2,45 +2,74 @@
 'use strict';
 
 var React = require("react");
+var Belt_List = require("bs-platform/lib/js/belt_List.js");
 var ReasonReactRouter = require("reason-react/src/ReasonReactRouter.js");
 var Layout$ReactHooksTemplate = require("./components/Layout.bs.js");
 var Pages__404$ReactHooksTemplate = require("./pages/Pages__404.bs.js");
 var Pages__Index$ReactHooksTemplate = require("./pages/Pages__Index.bs.js");
 var Pages__Signin$ReactHooksTemplate = require("./pages/Pages__Signin.bs.js");
 var Pages__Signup$ReactHooksTemplate = require("./pages/Pages__Signup.bs.js");
+var Pages__Collection__Overview$ReactHooksTemplate = require("./pages/collection/Pages__Collection__Overview.bs.js");
+
+function is_signedin(url) {
+  var match = Belt_List.head(url[/* path */0]);
+  if (match !== undefined) {
+    return match !== "auth";
+  } else {
+    return true;
+  }
+}
 
 function Router(Props) {
   var url = ReasonReactRouter.useUrl(undefined, /* () */0);
+  var renderNav = is_signedin(url);
   var match = url[/* path */0];
   var tmp;
   var exit = 0;
   if (match) {
-    if (match[0] === "auth") {
-      var match$1 = match[1];
-      if (match$1) {
-        switch (match$1[0]) {
-          case "signin" : 
-              if (match$1[1]) {
+    switch (match[0]) {
+      case "auth" : 
+          var match$1 = match[1];
+          if (match$1) {
+            switch (match$1[0]) {
+              case "signin" : 
+                  if (match$1[1]) {
+                    exit = 1;
+                  } else {
+                    tmp = React.createElement(Pages__Signin$ReactHooksTemplate.make, { });
+                  }
+                  break;
+              case "signup" : 
+                  if (match$1[1]) {
+                    exit = 1;
+                  } else {
+                    tmp = React.createElement(Pages__Signup$ReactHooksTemplate.make, { });
+                  }
+                  break;
+              default:
                 exit = 1;
-              } else {
-                tmp = React.createElement(Pages__Signin$ReactHooksTemplate.make, { });
-              }
-              break;
-          case "signup" : 
-              if (match$1[1]) {
-                exit = 1;
-              } else {
-                tmp = React.createElement(Pages__Signup$ReactHooksTemplate.make, { });
-              }
-              break;
-          default:
+            }
+          } else {
             exit = 1;
-        }
-      } else {
+          }
+          break;
+      case "collection" : 
+          var match$2 = match[1];
+          if (match$2) {
+            var match$3 = match$2[1];
+            if (match$3 && match$3[0] === "overview" && !match$3[1]) {
+              tmp = React.createElement(Pages__Collection__Overview$ReactHooksTemplate.make, {
+                    modelName: match$2[0]
+                  });
+            } else {
+              exit = 1;
+            }
+          } else {
+            exit = 1;
+          }
+          break;
+      default:
         exit = 1;
-      }
-    } else {
-      exit = 1;
     }
   } else {
     tmp = React.createElement(Pages__Index$ReactHooksTemplate.make, { });
@@ -51,11 +80,13 @@ function Router(Props) {
         });
   }
   return React.createElement(Layout$ReactHooksTemplate.make, {
-              children: tmp
+              children: tmp,
+              renderNav: renderNav
             });
 }
 
 var make = Router;
 
+exports.is_signedin = is_signedin;
 exports.make = make;
 /* react Not a pure module */

@@ -7,9 +7,13 @@ var burger = (require("@public/svg/burger.svg"));
 
 var id = (require("@public/svg/id-card.svg"));
 
+var folder = (require("@public/svg/folder.svg"));
+
 function Icon(Props) {
   var name = Props.name;
-  var logo = name >= 23515 ? id : burger;
+  var logo = name !== -107972946 ? (
+      name >= 23515 ? id : burger
+    ) : folder;
   return React.createElement("div", {
               dangerouslySetInnerHTML: {
                 __html: logo
@@ -21,5 +25,6 @@ var make = Icon;
 
 exports.burger = burger;
 exports.id = id;
+exports.folder = folder;
 exports.make = make;
 /* burger Not a pure module */

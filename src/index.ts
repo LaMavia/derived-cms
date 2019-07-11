@@ -84,7 +84,9 @@ import { SessionStorage } from './components/sessionStorage'
     )
     .use(KoaLogger())
     .use(KoaBody())
-    .use(mount('/static', KoaStatic(staticDir)))
+    .use(mount('/static', KoaStatic(staticDir, {
+      gzip: true
+    })))
     .use(authRouter.middleware())
     .use(sessionMiddleware([/\/auth/]))
     .use(
