@@ -31,13 +31,30 @@
 open Helpers;
 
 module Box = {
+  type action = {
+    href: string,
+    text: string,
+  };
+
+  let make_action: (~href: string, ~text: string) => action =
+    (~href, ~text) => {href, text};
+
   [@react.component]
-  let make = (~title, ~children, ~className="") => {
+  let make = (~title, ~children, ~className="", ~actions=[||]) => {
     <article className={"content__collection__box " ++ className}>
       <header className="content__collection__box__header">
         <h1 className="content__collection__box__header__title">
           title->str
         </h1>
+        <div className="content__collection__box__header__actions">
+          {actions
+           ->Belt.Array.mapWithIndex((i, action) =>
+               <Link className="content__collection__box__header__actions__link" href={action.href} key={i->string_of_int}>
+                 action.text->str
+               </Link>
+             )
+           ->React.array}
+        </div>
       </header>
       <section className="content__collection__box__body"> children </section>
     </article>;
@@ -98,7 +115,14 @@ let make = (~modelName) => {
              {("size: " ++ state.stats.size->format_size)->str}
            </span>
          </Box>
-         <Box title="schema">
+         <Box
+           actions=[|
+             Box.make_action(
+               ~href={j|/collection/$(modelName)/schema/edit|j},
+               ~text="edit",
+             ),
+           |]
+           title="schema">
            <table className="content__collection__box__body__table">
              <tbody>
                <tr className="content__collection__box__body__table__head">

@@ -6,6 +6,7 @@ var React = require("react");
 var Belt_Array = require("bs-platform/lib/js/belt_Array.js");
 var Nav$ReactHooksTemplate = require("./Nav.bs.js");
 var Icon$ReactHooksTemplate = require("./Icon.bs.js");
+var Footer$ReactHooksTemplate = require("./Footer.bs.js");
 var JMySon$ReactHooksTemplate = require("../JMySon.bs.js");
 var Helpers$ReactHooksTemplate = require("../Helpers.bs.js");
 
@@ -51,21 +52,27 @@ function Layout$NavInstance(Props) {
                   key: "1"
                 }), Belt_Array.mapWithIndex(match[0], (function (i, collection) {
                     return React.createElement(Nav$ReactHooksTemplate.Submenu[/* make */0], {
-                                children: React.createElement(Nav$ReactHooksTemplate.Item[/* make */0], {
-                                      href: "/collection/" + (String(collection) + "/overview"),
-                                      icon: React.createElement(Icon$ReactHooksTemplate.make, {
-                                            name: /* id */23515
-                                          }),
-                                      children: Helpers$ReactHooksTemplate.str("overview")
-                                    }),
+                                children: null,
                                 href: "#",
                                 icon: React.createElement(Icon$ReactHooksTemplate.make, {
                                       name: /* folder */-107972946
                                     }),
                                 rootContent: Helpers$ReactHooksTemplate.str(collection),
-                                nItems: 1,
+                                nItems: 2,
                                 key: String(i + 1 | 0)
-                              });
+                              }, React.createElement(Nav$ReactHooksTemplate.Item[/* make */0], {
+                                    href: "/collection/" + (String(collection) + "/overview"),
+                                    icon: React.createElement(Icon$ReactHooksTemplate.make, {
+                                          name: /* id */23515
+                                        }),
+                                    children: Helpers$ReactHooksTemplate.str("overview")
+                                  }), React.createElement(Nav$ReactHooksTemplate.Item[/* make */0], {
+                                    href: "collection/" + (String(collection) + "/schema/edit"),
+                                    icon: React.createElement(Icon$ReactHooksTemplate.make, {
+                                          name: /* resume */142895533
+                                        }),
+                                    children: Helpers$ReactHooksTemplate.str("edit schema")
+                                  }));
                   })));
 }
 
@@ -88,7 +95,7 @@ function Layout(Props) {
                     ]
                   }) : React.createElement(React.Fragment, undefined), React.createElement("section", {
                   className: "content"
-                }, children));
+                }, children, React.createElement(Footer$ReactHooksTemplate.make, { })));
 }
 
 var make = Layout;

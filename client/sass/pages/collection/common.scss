@@ -35,15 +35,27 @@
     overflow: hidden;
 
     &__header {
+      display: flex;
+      flex-flow: row nowrap;
       height: var(--col-box-header-h);
       padding: 0 1rem;
       background-color: #dadada;
       line-height: var(--col-box-header-h);
+      justify-content: space-between;
+
       &__title {
         font-size: calc(var(--col-box-header-h) / 3);
         color: #1f1f1f;
         font-weight: 400;
         text-transform: capitalize;
+      }
+
+      &__actions {
+        &__link {
+          color: #3a3a3a;
+          text-decoration: none;
+          text-transform: lowercase;
+        }
       }
     }
     &__body {
@@ -55,6 +67,9 @@
       color: #3a3a3a;
       position: relative;
       animation: show-body .5s 0s ease-in-out;
+      @include reduced-motion {
+        animation: none;
+      }
 
       &__text {
         font-weight: 400;

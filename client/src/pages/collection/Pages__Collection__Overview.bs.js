@@ -4,26 +4,48 @@
 var Curry = require("bs-platform/lib/js/curry.js");
 var React = require("react");
 var Belt_Array = require("bs-platform/lib/js/belt_Array.js");
+var Link$ReactHooksTemplate = require("../../components/Link.bs.js");
 var JMySon$ReactHooksTemplate = require("../../JMySon.bs.js");
 var Helpers$ReactHooksTemplate = require("../../Helpers.bs.js");
+
+function make_action(href, text) {
+  return /* record */[
+          /* href */href,
+          /* text */text
+        ];
+}
 
 function Pages__Collection__Overview$Box(Props) {
   var title = Props.title;
   var children = Props.children;
   var match = Props.className;
   var className = match !== undefined ? match : "";
+  var match$1 = Props.actions;
+  var actions = match$1 !== undefined ? match$1 : /* array */[];
   return React.createElement("article", {
               className: "content__collection__box " + className
             }, React.createElement("header", {
                   className: "content__collection__box__header"
                 }, React.createElement("h1", {
                       className: "content__collection__box__header__title"
-                    }, Helpers$ReactHooksTemplate.str(title))), React.createElement("section", {
+                    }, Helpers$ReactHooksTemplate.str(title)), React.createElement("div", {
+                      className: "content__collection__box__header__actions"
+                    }, Belt_Array.mapWithIndex(actions, (function (i, action) {
+                            return React.createElement(Link$ReactHooksTemplate.make, {
+                                        children: Helpers$ReactHooksTemplate.str(action[/* text */1]),
+                                        href: action[/* href */0],
+                                        className: "content__collection__box__header__actions__link",
+                                        key: String(i)
+                                      });
+                          })))), React.createElement("section", {
                   className: "content__collection__box__body"
                 }, children));
 }
 
-var Box = /* module */[/* make */Pages__Collection__Overview$Box];
+var Box = /* module */[
+  /* make_action */make_action,
+  /* make */Pages__Collection__Overview$Box
+];
 
 function displaySchema(schema) {
   return Belt_Array.mapWithIndex(schema, (function (i, entry) {
@@ -81,7 +103,11 @@ function Pages__Collection__Overview(Props) {
                                 className: "content__collection__box__body__table__head__cell"
                               }, Helpers$ReactHooksTemplate.str("name")), React.createElement("th", {
                                 className: "content__collection__box__body__table__head__cell"
-                              }, Helpers$ReactHooksTemplate.str("type"))), displaySchema(state$1[/* schema */2])))
+                              }, Helpers$ReactHooksTemplate.str("type"))), displaySchema(state$1[/* schema */2]))),
+              actions: /* array */[/* record */[
+                  /* href */"/collection/" + (String(modelName) + "/schema/edit"),
+                  /* text */"edit"
+                ]]
             }));
   } else {
     tmp = React.createElement("span", undefined, Helpers$ReactHooksTemplate.str("loading..."));

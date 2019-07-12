@@ -15,8 +15,8 @@ let make = (~title, ~children, ~onSubmit, ~btnValue, ~textUnder) => {
     style
     onMouseMove={e =>
       (
-        e->ReactEvent.Mouse.clientX / (-200),
-        e->ReactEvent.Mouse.clientY / (-200),
+        e->ReactEvent.Mouse.clientX / (-300),
+        e->ReactEvent.Mouse.clientY / (-300),
       )
       |> setpos
     }>

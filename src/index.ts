@@ -114,7 +114,7 @@ import { SessionStorage } from './components/sessionStorage'
   }, '')}
 
   ${section`Routes`}
-${router.stack
+${[...router.stack, ...authRouter.stack]
   .map(
     l =>
       `  ${symbol`=>`} ${method(l.methods.join(' | ') || '*')} ${path(

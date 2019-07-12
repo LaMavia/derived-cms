@@ -44,7 +44,7 @@ function Nav$Submenu(Props) {
                 ].join(" "),
               style: style
             }, React.createElement("button", {
-                  className: "nav__list__item submenu__root",
+                  className: "nav__list__item nav__submenu__root",
                   onClick: (function (param) {
                       return Curry._1(setopen, !isopen);
                     })

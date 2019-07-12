@@ -36,7 +36,7 @@ module NavInstance = {
            <Nav.Submenu
              href="#"
              key={(i + 1)->string_of_int}
-             nItems=1
+             nItems=2
              icon={<Icon name=`folder />}
              rootContent={collection->str}>
              <Nav.Item
@@ -44,6 +44,12 @@ module NavInstance = {
                icon={<Icon name=`id />}>
                "overview"->str
              </Nav.Item>
+             <Nav.Item
+               href={j|collection/$(collection)/schema/edit|j}
+               icon={<Icon name=`resume />}>
+               "edit schema"->str
+             </Nav.Item>
+             
            </Nav.Submenu>
          )
        ->React.array}
@@ -65,6 +71,9 @@ let make = (~children, ~renderNav) => {
      } else {
        <> </>;
      }}
-    <section className="content"> children </section>
+    <section className="content"> 
+      children
+      <Footer />
+    </section>
   </section>;
 };

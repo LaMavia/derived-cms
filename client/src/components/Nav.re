@@ -39,7 +39,7 @@ module Submenu = {
       }
       style>
       <button
-        className="nav__list__item submenu__root"
+        className="nav__list__item nav__submenu__root"
         onClick={_ => setopen(!isopen)}>
         <Link href className="nav__list__item__link">
           <figure className="nav__list__item__link__icon"> icon </figure>

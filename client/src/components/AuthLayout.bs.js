@@ -24,8 +24,8 @@ function AuthLayout(Props) {
               style: style,
               onMouseMove: (function (e) {
                   return Curry._1(setpos, /* tuple */[
-                              e.clientX / -200 | 0,
-                              e.clientY / -200 | 0
+                              e.clientX / -300 | 0,
+                              e.clientY / -300 | 0
                             ]);
                 })
             }, React.createElement("img", {

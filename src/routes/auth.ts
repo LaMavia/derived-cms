@@ -1,7 +1,7 @@
 import Router from 'koa-router'
 import { KoaConext } from '../context'
 import jwt from 'jsonwebtoken'
-import { makeSession } from '../components/sessionStorage'
+import { makeSession, SessionStorage } from '../components/sessionStorage'
 
 const r = new Router<any, KoaConext>({
   prefix: '/auth',
@@ -86,6 +86,16 @@ r.post('/signup', async ctx => {
   ctx.body = JSON.stringify({
     id: user._id,
   })
+})
+
+r.get("/signout", ctx => {
+  const sid = ctx.cookies.get(SessionStorage.key)
+  if(sid && ctx.sessionsManager.has(sid)) {
+    ctx.cookies.set(SessionStorage.key, undefined)
+  }
+
+  ctx.status = 302
+  ctx.redirect("/signin")
 })
 
 export default r
