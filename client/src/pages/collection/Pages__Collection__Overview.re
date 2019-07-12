@@ -33,11 +33,13 @@ open Helpers;
 module Box = {
   [@react.component]
   let make = (~title, ~children, ~className="") => {
-    <article className={"content__overview__box " ++ className}>
-      <header className="content__overview__box__header">
-        <h1 className="content__overview__box__header__title"> title->str </h1>
+    <article className={"content__collection__box " ++ className}>
+      <header className="content__collection__box__header">
+        <h1 className="content__collection__box__header__title">
+          title->str
+        </h1>
       </header>
-      <section className="content__overview__box__body"> children </section>
+      <section className="content__collection__box__body"> children </section>
     </article>;
   };
 };
@@ -45,9 +47,18 @@ module Box = {
 let displaySchema: array((string, string)) => React.element =
   schema =>
     schema
-    ->Belt.Array.map(entry => {
-        let (key, prop) = entry; 
-        <> <span> {j|$(key) : $(prop)|j}->str </span> <br /> </>;
+    ->Belt.Array.mapWithIndex((i, entry) => {
+        let (key, prop) = entry;
+        <tr
+          className="content__collection__box__body__table__row"
+          key={i->string_of_int}>
+          <td className="content__collection__box__body__table__row__cell">
+            key->str
+          </td>
+          <td className="content__collection__box__body__table__row__cell">
+            prop->str
+          </td>
+        </tr>;
       })
     ->React.array;
 
@@ -75,19 +86,35 @@ let make = (~modelName) => {
     None;
   });
 
-  <div className="content__overview">
+  <div className="content__collection content__collection--overview">
     {switch (state) {
      | Some(state) =>
        <>
-         <Box title="stats">
-           <span className="content__overview__box__body__text">
+         <Box title="stats" className="content__collection__box--hor">
+           <span className="content__collection__box__body__text">
              {("count: " ++ state.stats.count->string_of_int)->str}
            </span>
-           <span className="content__overview__box__body__text">
+           <span className="content__collection__box__body__text">
              {("size: " ++ state.stats.size->format_size)->str}
            </span>
          </Box>
-         <Box title="schema"> state.schema->displaySchema </Box>
+         <Box title="schema">
+           <table className="content__collection__box__body__table">
+             <tbody>
+               <tr className="content__collection__box__body__table__head">
+                 <th
+                   className="content__collection__box__body__table__head__cell">
+                   "name"->str
+                 </th>
+                 <th
+                   className="content__collection__box__body__table__head__cell">
+                   "type"->str
+                 </th>
+               </tr>
+               state.schema->displaySchema
+             </tbody>
+           </table>
+         </Box>
        </>
      | None => <span> "loading..."->str </span>
      }}

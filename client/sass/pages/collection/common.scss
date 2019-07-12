@@ -1,0 +1,94 @@
+@import '../../atoms/breakpoints.scss';
+
+:root {
+  --col-w: 32rem;
+  --col-box-header-h: 3rem;
+}
+
+@include mobile {
+  :root {
+    --col-w: calc(100vw - var(--nav-collapsed-w));
+  }
+}
+
+.content__collection {
+  width: var(--col-w);
+  min-height: 100vh;
+  overflow: visible auto;
+  display: flex;
+  flex-flow: column nowrap;
+  align-content: center;
+  margin: auto;
+  padding: 20px 5px; // Allowing box-shadow-x to display itself
+
+  @include mobile {
+    padding: 5px;
+  }
+
+  & > * {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  &__box {
+    box-shadow: 0 0 2px 0 rgba(21, 21, 21, 0.4);
+    overflow: hidden;
+
+    &__header {
+      height: var(--col-box-header-h);
+      padding: 0 1rem;
+      background-color: #dadada;
+      line-height: var(--col-box-header-h);
+      &__title {
+        font-size: calc(var(--col-box-header-h) / 3);
+        color: #1f1f1f;
+        font-weight: 400;
+        text-transform: capitalize;
+      }
+    }
+    &__body {
+      width: 100%;
+      display: flex;
+      flex-flow: column;
+      padding: 20px;
+      justify-content: space-around;
+      color: #3a3a3a;
+      position: relative;
+      animation: show-body .5s 0s ease-in-out;
+
+      &__text {
+        font-weight: 400;
+        font-size: 1.2rem;
+      }
+
+      &__table {
+        margin: auto;
+        width: 90%;
+        font-size: 1.1rem;
+
+        &__head {
+          &__cell {
+            font-weight: 500;
+            text-transform: uppercase;
+          }
+        }
+      }
+    }
+
+    &--hor {
+      .content__collection__box__body {
+        flex-flow: row;
+      }
+    }
+  }
+}
+
+@keyframes show-body {
+  from {
+    transform: translateY(100%);
+  }
+
+  to {
+    transform: translateY(0%);
+  }
+}

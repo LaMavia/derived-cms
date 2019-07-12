@@ -6,28 +6,36 @@ module NavInstance = {
     let (cols, setcols) = useState([||]);
 
     React.useEffect0(() => {
-      Js.Promise.(
-        Fetch.fetch("/db_api/labels")
-        |> then_(Fetch.Response.json)
-        |> then_(x => x->JMySon.Decode.labels_response->resolve)
-        |> then_((x: JMySon.labels_response) => x.data->setcols->resolve)
+      ignore(
+        Js.Promise.(
+          Fetch.fetch("/db_api/labels")
+          |> then_(Fetch.Response.json)
+          |> then_(x => x->JMySon.Decode.labels_response->resolve)
+          |> then_((x: JMySon.labels_response) => x.data->setcols->resolve)
+        ),
       );
       None;
     });
 
     <Nav state>
-      <Nav.Item href="/" icon={<Icon name=`id />}> "Welcome"->str </Nav.Item>
+      <Nav.Item key="0" href="/" icon={<Icon name=`id />}>
+        "Welcome"->str
+      </Nav.Item>
       <Nav.Submenu
+        key="1"
         nItems=1
         href="#"
         icon={<Icon name=`burger />}
         rootContent={"Hello"->str}>
-        <Nav.Item href="#" icon={<Icon name=`id />}> "there"->str </Nav.Item>
+        <Nav.Item href="#" key="0" icon={<Icon name=`id />}>
+          "there"->str
+        </Nav.Item>
       </Nav.Submenu>
       {cols
-       ->Belt.Array.map(collection =>
+       ->Belt.Array.mapWithIndex((i, collection) =>
            <Nav.Submenu
              href="#"
+             key={(i + 1)->string_of_int}
              nItems=1
              icon={<Icon name=`folder />}
              rootContent={collection->str}>

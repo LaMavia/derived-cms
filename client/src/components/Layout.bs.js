@@ -31,22 +31,25 @@ function Layout$NavInstance(Props) {
                   icon: React.createElement(Icon$ReactHooksTemplate.make, {
                         name: /* id */23515
                       }),
-                  children: Helpers$ReactHooksTemplate.str("Welcome")
+                  children: Helpers$ReactHooksTemplate.str("Welcome"),
+                  key: "0"
                 }), React.createElement(Nav$ReactHooksTemplate.Submenu[/* make */0], {
                   children: React.createElement(Nav$ReactHooksTemplate.Item[/* make */0], {
                         href: "#",
                         icon: React.createElement(Icon$ReactHooksTemplate.make, {
                               name: /* id */23515
                             }),
-                        children: Helpers$ReactHooksTemplate.str("there")
+                        children: Helpers$ReactHooksTemplate.str("there"),
+                        key: "0"
                       }),
                   href: "#",
                   icon: React.createElement(Icon$ReactHooksTemplate.make, {
                         name: /* burger */-662434123
                       }),
                   rootContent: Helpers$ReactHooksTemplate.str("Hello"),
-                  nItems: 1
-                }), Belt_Array.map(match[0], (function (collection) {
+                  nItems: 1,
+                  key: "1"
+                }), Belt_Array.mapWithIndex(match[0], (function (i, collection) {
                     return React.createElement(Nav$ReactHooksTemplate.Submenu[/* make */0], {
                                 children: React.createElement(Nav$ReactHooksTemplate.Item[/* make */0], {
                                       href: "/collection/" + (String(collection) + "/overview"),
@@ -60,7 +63,8 @@ function Layout$NavInstance(Props) {
                                       name: /* folder */-107972946
                                     }),
                                 rootContent: Helpers$ReactHooksTemplate.str(collection),
-                                nItems: 1
+                                nItems: 1,
+                                key: String(i + 1 | 0)
                               });
                   })));
 }

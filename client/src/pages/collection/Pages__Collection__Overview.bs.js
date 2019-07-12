@@ -13,21 +13,28 @@ function Pages__Collection__Overview$Box(Props) {
   var match = Props.className;
   var className = match !== undefined ? match : "";
   return React.createElement("article", {
-              className: "content__overview__box " + className
+              className: "content__collection__box " + className
             }, React.createElement("header", {
-                  className: "content__overview__box__header"
+                  className: "content__collection__box__header"
                 }, React.createElement("h1", {
-                      className: "content__overview__box__header__title"
+                      className: "content__collection__box__header__title"
                     }, Helpers$ReactHooksTemplate.str(title))), React.createElement("section", {
-                  className: "content__overview__box__body"
+                  className: "content__collection__box__body"
                 }, children));
 }
 
 var Box = /* module */[/* make */Pages__Collection__Overview$Box];
 
 function displaySchema(schema) {
-  return Belt_Array.map(schema, (function (entry) {
-                return React.createElement(React.Fragment, undefined, React.createElement("span", undefined, Helpers$ReactHooksTemplate.str("" + (String(entry[0]) + (" : " + (String(entry[1]) + ""))))), React.createElement("br", undefined));
+  return Belt_Array.mapWithIndex(schema, (function (i, entry) {
+                return React.createElement("tr", {
+                            key: String(i),
+                            className: "content__collection__box__body__table__row"
+                          }, React.createElement("td", {
+                                className: "content__collection__box__body__table__row__cell"
+                              }, Helpers$ReactHooksTemplate.str(entry[0])), React.createElement("td", {
+                                className: "content__collection__box__body__table__row__cell"
+                              }, Helpers$ReactHooksTemplate.str(entry[1])));
               }));
 }
 
@@ -58,20 +65,29 @@ function Pages__Collection__Overview(Props) {
     var state$1 = state;
     tmp = React.createElement(React.Fragment, undefined, React.createElement(Pages__Collection__Overview$Box, {
               title: "stats",
-              children: null
+              children: null,
+              className: "content__collection__box--hor"
             }, React.createElement("span", {
-                  className: "content__overview__box__body__text"
+                  className: "content__collection__box__body__text"
                 }, Helpers$ReactHooksTemplate.str("count: " + String(state$1[/* stats */0][/* count */0]))), React.createElement("span", {
-                  className: "content__overview__box__body__text"
+                  className: "content__collection__box__body__text"
                 }, Helpers$ReactHooksTemplate.str("size: " + format_size(state$1[/* stats */0][/* size */1])))), React.createElement(Pages__Collection__Overview$Box, {
               title: "schema",
-              children: displaySchema(state$1[/* schema */2])
+              children: React.createElement("table", {
+                    className: "content__collection__box__body__table"
+                  }, React.createElement("tbody", undefined, React.createElement("tr", {
+                            className: "content__collection__box__body__table__head"
+                          }, React.createElement("th", {
+                                className: "content__collection__box__body__table__head__cell"
+                              }, Helpers$ReactHooksTemplate.str("name")), React.createElement("th", {
+                                className: "content__collection__box__body__table__head__cell"
+                              }, Helpers$ReactHooksTemplate.str("type"))), displaySchema(state$1[/* schema */2])))
             }));
   } else {
     tmp = React.createElement("span", undefined, Helpers$ReactHooksTemplate.str("loading..."));
   }
   return React.createElement("div", {
-              className: "content__overview"
+              className: "content__collection content__collection--overview"
             }, tmp);
 }
 
