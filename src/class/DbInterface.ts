@@ -57,7 +57,9 @@ export abstract class DbInterface {
 
   public abstract stats(collection: string): Promise<CollectionStats>
 
-  public abstract collections_wschemas(collections?: string[]): Promise<CollectionModel[]>
+  public abstract collections_wschemas(
+    collections?: string[]
+  ): Promise<CollectionModel[]>
   /**
    * @returns {String[]} Returns names of all collections
    */

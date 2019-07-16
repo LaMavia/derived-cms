@@ -45,7 +45,7 @@ module NavInstance = {
                "overview"->str
              </Nav.Item>
              <Nav.Item
-               href={j|collection/$(collection)/schema/edit|j}
+               href={j|/collection/$(collection)/schema/edit|j}
                icon={<Icon name=`resume />}>
                "edit schema"->str
              </Nav.Item>

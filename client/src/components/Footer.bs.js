@@ -17,6 +17,14 @@ function Footer(Props) {
         /* record */[
           /* text */"author: freepik",
           /* href */"https://www.freepik.com/"
+        ],
+        /* record */[
+          /* text */"author: smashicons",
+          /* href */"https://www.flaticon.com/authors/smashicons"
+        ],
+        /* record */[
+          /* text */"license",
+          /* href */"http://creativecommons.org/licenses/by/3.0/"
         ]
       ]
     ],

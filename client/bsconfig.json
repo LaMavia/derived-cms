@@ -19,7 +19,8 @@
     "reason-react",
     "markdown-to-rex",
     "@glennsl/bs-json",
-    "bs-fetch"
+    "bs-fetch",
+    "bs-promise-monad"
   ],
   "refmt": 3
 }

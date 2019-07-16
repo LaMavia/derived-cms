@@ -49,7 +49,10 @@ module Box = {
         <div className="content__collection__box__header__actions">
           {actions
            ->Belt.Array.mapWithIndex((i, action) =>
-               <Link className="content__collection__box__header__actions__link" href={action.href} key={i->string_of_int}>
+               <Link
+                 className="content__collection__box__header__actions__link"
+                 href={action.href}
+                 key={i->string_of_int}>
                  action.text->str
                </Link>
              )
@@ -86,14 +89,14 @@ let format_size = (size: (float, string)) => {
 };
 
 [@react.component]
-let make = (~modelName) => {
+let make = (~collection) => {
   open JMySon;
   let (state: option(overview_state), setState) = useState(None);
 
   React.useEffect0(() => {
     ignore(
       Js.Promise.(
-        Fetch.fetch({j|/db_api/collection/$(modelName)/overview|j})
+        Fetch.fetch({j|/db_api/collection/$(collection)/overview|j})
         |> then_(Fetch.Response.json)
         |> then_(x => x->Decode.overview_response->resolve)
         |> then_(x => x.data |> resolve)
@@ -118,7 +121,7 @@ let make = (~modelName) => {
          <Box
            actions=[|
              Box.make_action(
-               ~href={j|/collection/$(modelName)/schema/edit|j},
+               ~href={j|/collection/$(collection)/schema/edit|j},
                ~text="edit",
              ),
            |]

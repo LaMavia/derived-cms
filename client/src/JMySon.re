@@ -12,6 +12,8 @@ type log_user = {
   password: string,
 };
 
+type schema = array((string, string));
+
 type response('dtype) = {
   data: 'dtype,
   error: string,
@@ -29,13 +31,16 @@ type labels_response = response(labels);
 type overview_state = {
   stats: collection_stats,
   collection: string,
-  schema: array((string, string)),
+  schema,
 };
 
 type overview_response = response(overview_state);
 
+type schema_response = response(schema);
+
 module Decode = {
   let auth_response = json => Json.Decode.{id: json |> field("id", string)};
+  let schema = json => Json.Decode.(json |> array(pair(string, string)));
   let collection_stats = json =>
     Json.Decode.{
       count: json |> field("count", int),
@@ -45,7 +50,14 @@ module Decode = {
     Json.Decode.{
       stats: json |> field("stats", collection_stats),
       collection: json |> field("collection", string),
-      schema: json |> field("schema", array(pair(string, string))),
+      schema: json |> field("schema", schema),
+    };
+
+  let schema_response = json =>
+    Json.Decode.{
+      data: json |> field("data", schema),
+      error: json |> field("error", string),
+      ok: json |> field("ok", bool),
     };
 
   let labels_response = json =>

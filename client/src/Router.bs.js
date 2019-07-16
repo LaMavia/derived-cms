@@ -9,6 +9,7 @@ var Pages__404$ReactHooksTemplate = require("./pages/Pages__404.bs.js");
 var Pages__Index$ReactHooksTemplate = require("./pages/Pages__Index.bs.js");
 var Pages__Signin$ReactHooksTemplate = require("./pages/Pages__Signin.bs.js");
 var Pages__Signup$ReactHooksTemplate = require("./pages/Pages__Signup.bs.js");
+var Pages__Collection__Schema$ReactHooksTemplate = require("./pages/collection/Pages__Collection__Schema.bs.js");
 var Pages__Collection__Overview$ReactHooksTemplate = require("./pages/collection/Pages__Collection__Overview.bs.js");
 
 function is_signedin(url) {
@@ -57,10 +58,31 @@ function Router(Props) {
           var match$2 = match[1];
           if (match$2) {
             var match$3 = match$2[1];
-            if (match$3 && match$3[0] === "overview" && !match$3[1]) {
-              tmp = React.createElement(Pages__Collection__Overview$ReactHooksTemplate.make, {
-                    modelName: match$2[0]
-                  });
+            if (match$3) {
+              var collection = match$2[0];
+              switch (match$3[0]) {
+                case "overview" : 
+                    if (match$3[1]) {
+                      exit = 1;
+                    } else {
+                      tmp = React.createElement(Pages__Collection__Overview$ReactHooksTemplate.make, {
+                            collection: collection
+                          });
+                    }
+                    break;
+                case "schema" : 
+                    var match$4 = match$3[1];
+                    if (match$4 && match$4[0] === "edit" && !match$4[1]) {
+                      tmp = React.createElement(Pages__Collection__Schema$ReactHooksTemplate.make, {
+                            collection: collection
+                          });
+                    } else {
+                      exit = 1;
+                    }
+                    break;
+                default:
+                  exit = 1;
+              }
             } else {
               exit = 1;
             }

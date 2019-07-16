@@ -148,4 +148,36 @@ r.get('collection/:model/overview', async ctx => {
   }
 })
 
+r.get('collection/:model/schema', async ctx => {
+  const model: string | undefined = ctx.params['model']
+
+  if (!model) {
+    const res: APIResponse = {
+      data: undefined,
+      error: `collection/:model/overview | param "model" not specified`,
+      ok: false,
+    }
+
+    ctx.body = str.api_error(res)
+  } else {
+    const schema = await ctx.db
+      .collections_wschemas([model])
+      .catch(err => new Error(err))
+
+    if (schema instanceof Error) {
+      ctx.body = str.api_error({
+        data: undefined,
+        error: `${schema.message};\n${schema.stack}`,
+        ok: false,
+      })
+    } else {
+      ctx.body = JSON.stringify({
+        data: schema[0].schema,
+        error: '',
+        ok: true,
+      })
+    }
+  }
+})
+
 export default r

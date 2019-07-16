@@ -21,8 +21,10 @@ let make = () => {
      | [] => <Pages__Index />
      | ["auth", "signin"] => <Pages__Signin />
      | ["auth", "signup"] => <Pages__Signup />
-     | ["collection", modelName, "overview"] =>
-       <Pages__Collection__Overview modelName />
+     | ["collection", collection, "overview"] =>
+       <Pages__Collection__Overview collection />
+     | ["collection", collection, "schema", "edit"] =>
+       <Pages__Collection__Schema collection />
      | _ => <Pages__404 path={url.path} />
      }}
   </Layout>;

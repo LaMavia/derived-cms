@@ -8,6 +8,12 @@ function auth_response(json) {
   return /* record */[/* id */Json_decode.field("id", Json_decode.string, json)];
 }
 
+function schema(json) {
+  return Json_decode.array((function (param) {
+                return Json_decode.pair(Json_decode.string, Json_decode.string, param);
+              }), json);
+}
+
 function collection_stats(json) {
   return /* record */[
           /* count */Json_decode.field("count", Json_decode.$$int, json),
@@ -21,11 +27,15 @@ function overview_state(json) {
   return /* record */[
           /* stats */Json_decode.field("stats", collection_stats, json),
           /* collection */Json_decode.field("collection", Json_decode.string, json),
-          /* schema */Json_decode.field("schema", (function (param) {
-                  return Json_decode.array((function (param) {
-                                return Json_decode.pair(Json_decode.string, Json_decode.string, param);
-                              }), param);
-                }), json)
+          /* schema */Json_decode.field("schema", schema, json)
+        ];
+}
+
+function schema_response(json) {
+  return /* record */[
+          /* data */Json_decode.field("data", schema, json),
+          /* error */Json_decode.field("error", Json_decode.string, json),
+          /* ok */Json_decode.field("ok", Json_decode.bool, json)
         ];
 }
 
@@ -49,8 +59,10 @@ function overview_response(json) {
 
 var Decode = /* module */[
   /* auth_response */auth_response,
+  /* schema */schema,
   /* collection_stats */collection_stats,
   /* overview_state */overview_state,
+  /* schema_response */schema_response,
   /* labels_response */labels_response,
   /* overview_response */overview_response
 ];

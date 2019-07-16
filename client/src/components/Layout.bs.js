@@ -18,7 +18,7 @@ function Layout$NavInstance(Props) {
           fetch("/db_api/labels").then((function (prim) {
                       return prim.json();
                     })).then((function (x) {
-                    return Promise.resolve(JMySon$ReactHooksTemplate.Decode[/* labels_response */3](x));
+                    return Promise.resolve(JMySon$ReactHooksTemplate.Decode[/* labels_response */5](x));
                   })).then((function (x) {
                   return Promise.resolve(Curry._1(setcols, x[/* data */0]));
                 }));
@@ -67,7 +67,7 @@ function Layout$NavInstance(Props) {
                                         }),
                                     children: Helpers$ReactHooksTemplate.str("overview")
                                   }), React.createElement(Nav$ReactHooksTemplate.Item[/* make */0], {
-                                    href: "collection/" + (String(collection) + "/schema/edit"),
+                                    href: "/collection/" + (String(collection) + "/schema/edit"),
                                     icon: React.createElement(Icon$ReactHooksTemplate.make, {
                                           name: /* resume */142895533
                                         }),

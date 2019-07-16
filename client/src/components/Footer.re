@@ -18,19 +18,24 @@ let make = () => {
       links: [|
         {text: "download source", href: "https://www.flaticon.com/"},
         {text: "author: freepik", href: "https://www.freepik.com/"},
+        {
+          text: "author: smashicons",
+          href: "https://www.flaticon.com/authors/smashicons",
+        },
+        {
+          text: "license",
+          href: "http://creativecommons.org/licenses/by/3.0/",
+        },
       |],
     },
     {
       title: "where to find me",
       links: [|
+        {text: "github", href: "https://github.com/DerivedMate"},
         {
-          text: "github", 
-          href: "https://github.com/DerivedMate"
+          text: "e-mail",
+          href: "mailto: kemikspl@gmail.com?subject=feedback%20derivedcms",
         },
-        {
-          text: "e-mail", 
-          href: "mailto: kemikspl@gmail.com?subject=feedback%20derivedcms" 
-        }
       |],
     },
   |];

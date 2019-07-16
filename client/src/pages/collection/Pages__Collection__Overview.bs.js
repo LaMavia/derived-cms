@@ -66,15 +66,15 @@ function format_size(size) {
 }
 
 function Pages__Collection__Overview(Props) {
-  var modelName = Props.modelName;
+  var collection = Props.collection;
   var match = Helpers$ReactHooksTemplate.useState(undefined);
   var setState = match[1];
   var state = match[0];
   React.useEffect((function () {
-          fetch("/db_api/collection/" + (String(modelName) + "/overview")).then((function (prim) {
+          fetch("/db_api/collection/" + (String(collection) + "/overview")).then((function (prim) {
                         return prim.json();
                       })).then((function (x) {
-                      return Promise.resolve(JMySon$ReactHooksTemplate.Decode[/* overview_response */4](x));
+                      return Promise.resolve(JMySon$ReactHooksTemplate.Decode[/* overview_response */6](x));
                     })).then((function (x) {
                     return Promise.resolve(x[/* data */0]);
                   })).then((function (x) {
@@ -105,7 +105,7 @@ function Pages__Collection__Overview(Props) {
                                 className: "content__collection__box__body__table__head__cell"
                               }, Helpers$ReactHooksTemplate.str("type"))), displaySchema(state$1[/* schema */2]))),
               actions: /* array */[/* record */[
-                  /* href */"/collection/" + (String(modelName) + "/schema/edit"),
+                  /* href */"/collection/" + (String(collection) + "/schema/edit"),
                   /* text */"edit"
                 ]]
             }));
