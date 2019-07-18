@@ -62,6 +62,27 @@ function Modal$TwoFields(Props) {
 
 var TwoFields = /* module */[/* make */Modal$TwoFields];
 
+function Modal$OneField(Props) {
+  var label = Props.label;
+  var onAccept = Props.onAccept;
+  return React.createElement(Modal$Empty, {
+              children: null,
+              onAccept: (function (e) {
+                  return Curry._1(onAccept, e.currentTarget.label);
+                })
+            }, React.createElement("label", {
+                  className: "modal__body__label",
+                  htmlFor: label
+                }, Helpers$ReactHooksTemplate.str(label)), React.createElement("input", {
+                  className: "model__body__input",
+                  name: label,
+                  type: "text"
+                }));
+}
+
+var OneField = /* module */[/* make */Modal$OneField];
+
 exports.Empty = Empty;
 exports.TwoFields = TwoFields;
+exports.OneField = OneField;
 /* react Not a pure module */

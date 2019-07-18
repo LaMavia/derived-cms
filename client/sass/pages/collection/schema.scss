@@ -1,0 +1,100 @@
+@import '../../atoms/breakpoints.scss';
+
+:root {
+  --schema-field-h: 2rem;
+}
+
+.content__schema {
+  width: 35rem;
+  min-height: 100vh;
+  display: flex;
+  flex-flow: column nowrap;
+  padding-top: 20px;
+  margin: 0 auto;
+  @include mobile {
+    width: calc(100vw - var(--nav-collapsed-w));
+  }
+
+  &__fields {
+    height: auto;
+    display: flex;
+    flex-flow: column nowrap;
+    @include mobile {
+      width: 100%;
+    }
+
+    &__item {
+      height: var(--schema-field-h);
+      margin: 5px;
+      display: flex;
+      flex-flow: row nowrap;
+      font-size: 1.2rem;
+      justify-content: space-between;
+      line-height: var(--schema-field-h);
+
+      &__key {
+        border: none;
+        border-bottom: 1px #2b2b2b solid;
+        appearance: none;
+        font-size: inherit;
+        padding-left: 5px;
+        @include mobile {
+          width: 7rem;
+        }
+      }
+
+      &__value {
+        color: #3f3f3f;
+        width: 5rem;
+        flex: 2 0 0;
+      }
+
+      &__actions {
+        &__btn {
+          $color: #2c2c2c;
+          margin: 0 5px;
+          height: 100%;
+          border: 1px solid $color;
+          background-color: transparent;
+          color: $color;
+          padding: 5px;
+          font-size: 1rem;
+          transition: background-color 0.15s 0s ease-in-out,
+            color 0.15s 0s ease-in-out;
+
+          &:focus {
+            color: #ffffff;
+            background-color: $color;
+          }
+        }
+      }
+    }
+  }
+
+  &__add {
+    margin-top: 10px;
+    display: flex;
+    flex-flow: row;
+    justify-content: space-evenly;
+
+    &__field {
+      display: flex;
+      flex-flow: column nowrap;
+      width: 8rem;
+
+      &__label {
+        font-size: 1rem;
+      }
+
+      &__input {
+        height: var(--schema-field-h);
+      }
+    }
+
+    &__btn {
+      margin-top: auto;
+      height: var(--schema-field-h);
+      width: 5rem;
+    }
+  }
+}

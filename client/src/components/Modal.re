@@ -41,3 +41,13 @@ module TwoFields = {
     </Empty>;
   };
 };
+
+module OneField = {
+  [@react.component]
+  let make = (~label, ~onAccept) => {
+    <Empty onAccept={e => e->ReactEvent.Form.currentTarget##label->onAccept}>
+      <label htmlFor=label className="modal__body__label"> label->str </label>
+      <input name=label type_="text" className="model__body__input" />
+    </Empty>;
+  };
+};
