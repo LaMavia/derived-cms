@@ -71,7 +71,7 @@ function Pages__Collection__Overview(Props) {
   var setState = match[1];
   var state = match[0];
   React.useEffect((function () {
-          fetch("/db_api/collection/" + (String(collection) + "/overview")).then((function (prim) {
+          fetch("/collection/" + (String(collection) + "/overview")).then((function (prim) {
                         return prim.json();
                       })).then((function (x) {
                       return Promise.resolve(JMySon$ReactHooksTemplate.Decode[/* overview_response */6](x));

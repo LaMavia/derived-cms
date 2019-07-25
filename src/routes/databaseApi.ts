@@ -110,74 +110,100 @@ r.get('labels', async ctx => {
   else ctx.body = str.api_str_arr(data)
 })
 
-r.get('collection/:model/overview', async ctx => {
-  const model: string | undefined = ctx.params['model']
+// -------- Fields API -------- //
 
-  if (!model) {
+r.post(':model/field/delete', async ctx => {
+  const model: string = ctx.params['model']
+  const key: Option<string> = ctx.query['key']
+
+  if (!key) {
     const res: APIResponse = {
       data: undefined,
-      error: `collection/:model/overview | param "model" not specified`,
+      error: `query param "key" not specified`,
       ok: false,
     }
 
     ctx.body = str.api_error(res)
   } else {
-    const rs = await Promise.all([
-      ctx.db.stats(model),
-      ctx.db.collections_wschemas([model]),
-    ]).catch(err => new Error(err))
-
-    if (rs instanceof Error) {
-      ctx.body = str.api_error({
-        data: undefined,
-        error: `${rs.message};\n${rs.stack}`,
-        ok: false,
-      })
-    } else {
-      const [stats, colmodel] = rs
-      ctx.body = JSON.stringify({
-        data: {
-          stats,
-          collection: colmodel[0].collection,
-          schema: colmodel[0].schema,
-        },
-        error: '',
-        ok: true,
-      })
-    }
-  }
-})
-
-r.get('collection/:model/schema', async ctx => {
-  const model: string | undefined = ctx.params['model']
-
-  if (!model) {
-    const res: APIResponse = {
-      data: undefined,
-      error: `collection/:model/overview | param "model" not specified`,
-      ok: false,
-    }
-
-    ctx.body = str.api_error(res)
-  } else {
-    const schema = await ctx.db
-      .collections_wschemas([model])
+    const dbRes = await ctx.db
+      .field_delete(model, key)
       .catch(err => new Error(err))
-
-    if (schema instanceof Error) {
+    if (dbRes instanceof Error) {
       ctx.body = str.api_error({
         data: undefined,
-        error: `${schema.message};\n${schema.stack}`,
+        error: `${dbRes.message};\n${dbRes.stack}`,
         ok: false,
       })
-    } else {
+    } else
       ctx.body = JSON.stringify({
-        data: schema[0].schema,
+        data: dbRes,
         error: '',
         ok: true,
       })
-    }
   }
 })
 
+r.post(':model/field/add', async ctx => {
+  const model: string = ctx.params['model']
+  const key: Option<string> = ctx.query['key']
+  const type: Option<FieldType> = ctx.query['type']
+
+  if (!(key && type)) {
+    const res: APIResponse = {
+      data: undefined,
+      error: `query param "key" or "type" not specified`,
+      ok: false,
+    }
+
+    ctx.body = str.api_error(res)
+  } else {
+    const dbRes = await ctx.db
+      .field_new(model, key, type)
+      .catch((err: any) => new Error(err))
+    if (dbRes instanceof Error) {
+      ctx.body = str.api_error({
+        data: undefined,
+        error: `${dbRes.message};\n${dbRes.stack}`,
+        ok: false,
+      })
+    } else
+      ctx.body = JSON.stringify({
+        data: dbRes,
+        error: '',
+        ok: true,
+      })
+  }
+})
+
+r.post(':model/field/rename', async ctx => {
+  const model: string = ctx.params['model']
+  const oldkey: Option<string> = ctx.query['oldk']
+  const newkey: Option<FieldType> = ctx.query['newk']
+
+  if (!(oldkey && newkey)) {
+    const res: APIResponse = {
+      data: undefined,
+      error: `query param "oldkey" or "newkey" not specified`,
+      ok: false,
+    }
+
+    ctx.body = str.api_error(res)
+  } else {
+    const dbRes = await ctx.db
+      .field_rename(model, oldkey, newkey)
+      .catch((err: any) => new Error(err))
+    if (dbRes instanceof Error) {
+      ctx.body = str.api_error({
+        data: undefined,
+        error: `${dbRes.message};\n${dbRes.stack}`,
+        ok: false,
+      })
+    } else
+      ctx.body = JSON.stringify({
+        data: dbRes,
+        error: '',
+        ok: true,
+      })
+  }
+})
 export default r

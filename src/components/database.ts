@@ -68,6 +68,25 @@ export class MongoDatabase extends DbInterface {
     this.mongo_models[collection] = mod
   }
 
+  private getDefaultValue(type: FieldType) {
+    switch (type) {
+      case 'Boolean':
+        return true
+      case 'Date':
+        new Date().toLocaleDateString('en-EN')
+      case 'ID':
+        return mongo.Types.ObjectId.generate().toString('hex')
+      case 'Number':
+        return 0
+      case 'String':
+        return ''
+      case 'Text':
+        return ''
+      default:
+        return null
+    }
+  }
+
   connect() {
     return new Promise<void>((res, rej) => {
       mongo
@@ -217,6 +236,10 @@ export class MongoDatabase extends DbInterface {
 
       this.connection
         .dropCollection(name)
+        .then(() => {
+          delete this.models[name]
+          delete this.mongo_models[name]
+        })
         .then(_ => ({
           dropCount: 1,
           collction: name,
@@ -241,12 +264,7 @@ export class MongoDatabase extends DbInterface {
     })
   }
 
-  field_new<T = any>(
-    collection: string,
-    key: string,
-    type: FieldType,
-    defaultValue: T
-  ) {
+  field_new(collection: string, key: string, type: FieldType) {
     return new Promise((res, rej) => {
       if (!this.connection)
         return rej(
@@ -263,14 +281,13 @@ export class MongoDatabase extends DbInterface {
           },
           {
             $set: {
-              [key]: defaultValue,
+              [key]: this.getDefaultValue(type),
             },
           }
         )
         .then(r => {
-          this.mongo_models[collection].schema.add({
-            [key]: this.translate_field_to_mongo(type),
-          })
+          debugger
+          this.models[collection].schema[key] = type
           res(JSON.stringify(r))
         })
         .catch(rej)
@@ -294,7 +311,13 @@ export class MongoDatabase extends DbInterface {
             },
           }
         )
-        .then(res)
+        .then(dbRes => {
+          const model = this.models[collection].schema
+          model[newKey] = model[key]
+          delete model[key]
+
+          res(dbRes)
+        })
         .catch(rej)
     })
   }
@@ -315,7 +338,10 @@ export class MongoDatabase extends DbInterface {
           }
         )
 
-        .then(res)
+        .then(dbRes => {
+          delete this.models[collection].schema[key]
+          res(dbRes)
+        })
         .catch(rej)
     })
   }
@@ -386,26 +412,7 @@ export class MongoDatabase extends DbInterface {
   save_schemas() {
     return new Promise<void>((res, rej) => {
       console.log('Saving schemas')
-      for (const col in this.mongo_models) {
-        const mm = this.mongo_models[col]
-        const def = mm.schema.obj
-        const toSave: Schema = {}
-
-        // -------- Translate back to FieldTypes -------- //
-        for (const k in def) {
-          const v: Function = def[k]
-          /**
-           * @note Handle strings, because during translation to bson types, difference between "Text" and "String" is lost.
-           */
-          if (v.name === 'String') {
-            toSave[k] = this.models[col].schema[k] || 'String'
-          } else {
-            toSave[k] = this.translate_mongo_to_field(v)
-          }
-        }
-
-        this.models[col].schema = toSave
-      }
+      console.time("models_saver")
 
       // -------- Save -------- //
       const path = resolve(process.env['DC_DATA_PATH'] || '.', 'models.json')
@@ -413,6 +420,7 @@ export class MongoDatabase extends DbInterface {
       fs.writeFile(path, data)
         .then(r => {
           console.log(`saved models to ${path}`)
+          console.timeEnd("models_saver")
           console.log('Models: \n', data)
           return r
         })

@@ -96,7 +96,7 @@ let make = (~collection) => {
   React.useEffect0(() => {
     ignore(
       Js.Promise.(
-        Fetch.fetch({j|/db_api/collection/$(collection)/overview|j})
+        Fetch.fetch({j|/collection/$(collection)/overview|j})
         |> then_(Fetch.Response.json)
         |> then_(x => x->Decode.overview_response->resolve)
         |> then_(x => x.data |> resolve)

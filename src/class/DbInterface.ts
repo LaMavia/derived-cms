@@ -42,11 +42,10 @@ export abstract class DbInterface {
   public abstract collection_delete(name: string): Promise<any>
   public abstract collection_cleanse(name: string): Promise<any>
 
-  public abstract field_new<T = any>(
+  public abstract field_new(
     collection: string,
     key: string,
     type: FieldType,
-    defaultValue: T
   ): Promise<any>
   public abstract field_delete(collection: string, key: string): Promise<any>
   public abstract field_rename(

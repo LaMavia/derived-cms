@@ -26,6 +26,7 @@ import {
 import index from './routes/index'
 import dbApi from './routes/databaseApi'
 import authRouter from './routes/auth'
+import collectionRouter from './routes/collection'
 
 // -------- /Routes -------- //
 
@@ -65,9 +66,9 @@ import { SessionStorage } from './components/sessionStorage'
   await db.connect()
 
   // -------- Init "CRON" jobs -------- //
-  // setInterval(() => {
-  //   db.save_schemas()
-  // }, 60000)
+  setInterval(() => {
+    db.save_schemas()
+  }, 60000)
 
   // -------- Init Context -------- //
   app.context.db = db
@@ -84,13 +85,19 @@ import { SessionStorage } from './components/sessionStorage'
     )
     .use(KoaLogger())
     .use(KoaBody())
-    .use(mount('/static', KoaStatic(staticDir, {
-      gzip: true
-    })))
+    .use(
+      mount(
+        '/static',
+        KoaStatic(staticDir, {
+          gzip: true,
+        })
+      )
+    )
     .use(authRouter.middleware())
     .use(sessionMiddleware([/\/auth/]))
     .use(
       router
+        .use(collectionRouter.routes())
         .use(dbApi.routes())
         .use(index.routes())
         .middleware()

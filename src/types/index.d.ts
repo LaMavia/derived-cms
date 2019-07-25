@@ -2,6 +2,8 @@ declare interface HashMap<T = string> {
   [key: string]: T
 }
 
+declare type Option<T> = T | undefined
+
 type FieldType = 'String' | 'Text' | 'ID' | 'Date' | 'Boolean' | 'Number'
 type Schema = HashMap<FieldType>
 interface Model {

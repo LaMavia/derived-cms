@@ -70,31 +70,4 @@
       }
     }
   }
-
-  &__add {
-    margin-top: 10px;
-    display: flex;
-    flex-flow: row;
-    justify-content: space-evenly;
-
-    &__field {
-      display: flex;
-      flex-flow: column nowrap;
-      width: 8rem;
-
-      &__label {
-        font-size: 1rem;
-      }
-
-      &__input {
-        height: var(--schema-field-h);
-      }
-    }
-
-    &__btn {
-      margin-top: auto;
-      height: var(--schema-field-h);
-      width: 5rem;
-    }
-  }
 }
