@@ -25,6 +25,8 @@ let make = () => {
        <Pages__Collection__Overview collection />
      | ["collection", collection, "schema", "edit"] =>
        <Pages__Collection__Schema collection />
+     | ["collection", collection, "items"] =>
+       <Pages__Collection__Items collection />
      | _ => <Pages__404 path={url.path} />
      }}
   </Layout>;

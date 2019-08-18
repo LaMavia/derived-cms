@@ -12,8 +12,7 @@
       "theme": "String",
       "image_url": "String",
       "date": "Date",
-      "front_page_style": "String",
-      "afield": "Text"
+      "front_page_style": "String"
     }
   }
 }

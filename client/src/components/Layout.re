@@ -36,7 +36,7 @@ module NavInstance = {
            <Nav.Submenu
              href="#"
              key={(i + 1)->string_of_int}
-             nItems=2
+             nItems=3
              icon={<Icon name=`folder />}
              rootContent={collection->str}>
              <Nav.Item
@@ -48,6 +48,11 @@ module NavInstance = {
                href={j|/collection/$(collection)/schema/edit|j}
                icon={<Icon name=`resume />}>
                "edit schema"->str
+             </Nav.Item>
+             <Nav.Item
+               href={j|/collection/$(collection)/items|j}
+               icon={<Icon name=`resume />}>
+               "items"->str
              </Nav.Item>
              
            </Nav.Submenu>

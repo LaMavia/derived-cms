@@ -248,6 +248,7 @@ let make = (~collection) => {
               name="type_"
               id="type_"
               value={Array.get(addForm, 1)}
+              className="content__schema__fields__item__value__select"
               onChange={e => {
                 open ReactEvent.Form;
                 e->preventDefault;

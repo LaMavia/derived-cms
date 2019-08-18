@@ -18,7 +18,7 @@ function Layout$NavInstance(Props) {
           fetch("/db_api/labels").then((function (prim) {
                       return prim.json();
                     })).then((function (x) {
-                    return Promise.resolve(JMySon$ReactHooksTemplate.Decode[/* labels_response */5](x));
+                    return Promise.resolve(JMySon$ReactHooksTemplate.Decode[/* labels_response */6](x));
                   })).then((function (x) {
                   return Promise.resolve(Curry._1(setcols, x[/* data */0]));
                 }));
@@ -58,7 +58,7 @@ function Layout$NavInstance(Props) {
                                       name: /* folder */-107972946
                                     }),
                                 rootContent: Helpers$ReactHooksTemplate.str(collection),
-                                nItems: 2,
+                                nItems: 3,
                                 key: String(i + 1 | 0)
                               }, React.createElement(Nav$ReactHooksTemplate.Item[/* make */0], {
                                     href: "/collection/" + (String(collection) + "/overview"),
@@ -72,6 +72,12 @@ function Layout$NavInstance(Props) {
                                           name: /* resume */142895533
                                         }),
                                     children: Helpers$ReactHooksTemplate.str("edit schema")
+                                  }), React.createElement(Nav$ReactHooksTemplate.Item[/* make */0], {
+                                    href: "/collection/" + (String(collection) + "/items"),
+                                    icon: React.createElement(Icon$ReactHooksTemplate.make, {
+                                          name: /* resume */142895533
+                                        }),
+                                    children: Helpers$ReactHooksTemplate.str("items")
                                   }));
                   })));
 }

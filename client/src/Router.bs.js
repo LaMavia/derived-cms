@@ -9,6 +9,7 @@ var Pages__404$ReactHooksTemplate = require("./pages/Pages__404.bs.js");
 var Pages__Index$ReactHooksTemplate = require("./pages/Pages__Index.bs.js");
 var Pages__Signin$ReactHooksTemplate = require("./pages/Pages__Signin.bs.js");
 var Pages__Signup$ReactHooksTemplate = require("./pages/Pages__Signup.bs.js");
+var Pages__Collection__Items$ReactHooksTemplate = require("./pages/collection/Pages__Collection__Items.bs.js");
 var Pages__Collection__Schema$ReactHooksTemplate = require("./pages/collection/Pages__Collection__Schema.bs.js");
 var Pages__Collection__Overview$ReactHooksTemplate = require("./pages/collection/Pages__Collection__Overview.bs.js");
 
@@ -61,6 +62,15 @@ function Router(Props) {
             if (match$3) {
               var collection = match$2[0];
               switch (match$3[0]) {
+                case "items" : 
+                    if (match$3[1]) {
+                      exit = 1;
+                    } else {
+                      tmp = React.createElement(Pages__Collection__Items$ReactHooksTemplate.make, {
+                            collection: collection
+                          });
+                    }
+                    break;
                 case "overview" : 
                     if (match$3[1]) {
                       exit = 1;

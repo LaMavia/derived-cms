@@ -60,6 +60,13 @@ module Decode = {
       ok: json |> field("ok", bool),
     };
 
+  let items_response = json =>
+    Json.Decode.{
+      data: json |> field("data", array(schema)),
+      error: json |> field("error", string),
+      ok: json |> field("ok", bool),
+    };
+
   let labels_response = json =>
     Json.Decode.{
       data: json |> field("data", array(string)),

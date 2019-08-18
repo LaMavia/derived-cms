@@ -44,6 +44,43 @@ r.get('all/:model', async (ctx, _next) => {
   }
 })
 
+r.get('selected/:model', async (ctx, _next) => {
+  const model: string | undefined = ctx.params['model']
+  const min: number = +ctx.query['min'] || 0
+  const max: number = +ctx.query['max'] || 100
+
+  if (!model) {
+    const res: APIResponse = {
+      data: undefined,
+      error: `/selected/:model | param "model" not specified`,
+      ok: false,
+    }
+
+    ctx.body = str.api_error(res)
+  } else {
+    ctx.body = JSON.stringify(
+      await ctx.db
+        .find(model)
+        .then((data: any[]) => {
+          const selected = data.slice(min, max).map(Object.entries)
+          return {
+            data: selected,
+            ok: true,
+            error: '',
+          }
+        })
+        .catch(error => {
+          console.error(error)
+          return {
+            data: '',
+            ok: false,
+            error,
+          }
+        })
+    )
+  }
+})
+
 r.get('models', async ctx => {
   const data = []
 

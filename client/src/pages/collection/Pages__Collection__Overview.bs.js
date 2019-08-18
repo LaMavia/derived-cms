@@ -74,7 +74,7 @@ function Pages__Collection__Overview(Props) {
           fetch("/collection/" + (String(collection) + "/overview")).then((function (prim) {
                         return prim.json();
                       })).then((function (x) {
-                      return Promise.resolve(JMySon$ReactHooksTemplate.Decode[/* overview_response */6](x));
+                      return Promise.resolve(JMySon$ReactHooksTemplate.Decode[/* overview_response */7](x));
                     })).then((function (x) {
                     return Promise.resolve(x[/* data */0]);
                   })).then((function (x) {

@@ -39,6 +39,16 @@ function schema_response(json) {
         ];
 }
 
+function items_response(json) {
+  return /* record */[
+          /* data */Json_decode.field("data", (function (param) {
+                  return Json_decode.array(schema, param);
+                }), json),
+          /* error */Json_decode.field("error", Json_decode.string, json),
+          /* ok */Json_decode.field("ok", Json_decode.bool, json)
+        ];
+}
+
 function labels_response(json) {
   return /* record */[
           /* data */Json_decode.field("data", (function (param) {
@@ -63,6 +73,7 @@ var Decode = /* module */[
   /* collection_stats */collection_stats,
   /* overview_state */overview_state,
   /* schema_response */schema_response,
+  /* items_response */items_response,
   /* labels_response */labels_response,
   /* overview_response */overview_response
 ];

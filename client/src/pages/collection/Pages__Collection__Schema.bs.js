@@ -220,6 +220,7 @@ function Pages__Collection__Schema(Props) {
                                 })), React.createElement("td", {
                               className: "content__schema__fields__item__value"
                             }, React.createElement("select", {
+                                  className: "content__schema__fields__item__value__select",
                                   id: "type_",
                                   name: "type_",
                                   value: Caml_array.caml_array_get(addForm, 1),
