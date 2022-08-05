@@ -30,7 +30,7 @@
     "koa-router": "^7.4.0",
     "koa-session2": "^2.2.10",
     "koa-static": "^5.0.0",
-    "mongoose": "^5.6.3",
+    "mongoose": "^5.7.5",
     "node-emoji": "^1.10.0",
     "overload-protection": "^1.1.0"
   },
