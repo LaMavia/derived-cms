@@ -19,7 +19,7 @@
     "dotenv": "^8.0.0",
     "fast-json-stringify": "^1.15.3",
     "fs-extra": "^8.1.0",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "keygrip": "^1.1.0",
     "koa": "^2.7.0",
     "koa-body": "^4.1.0",
